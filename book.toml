@@ -1,0 +1,5 @@
+[book]
+authors = ["ByteDance", "Rspack Rust Book Contributors"]
+language = "en"
+src = "src"
+title = "Rspack Rust Book"
