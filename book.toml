@@ -3,3 +3,7 @@ authors = ["ByteDance", "Rspack Rust Book Contributors"]
 language = "en"
 src = "src"
 title = "Rspack Rust Book"
+
+[output.html]
+git-repository-url = "https://github.com/rspack-contrib/rspack-rust-book/tree/main"
+edit-url-template = "https://github.com/rspack-contrib/rspack-rust-book/tree/main/{path}"
