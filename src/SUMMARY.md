@@ -4,4 +4,5 @@
 
 # Rspack Custom Binding
 
-- [Getting Started](./getting-started.md)
+- [Getting Started](./custom-binding/getting-started/index.md)
+  - [Installation](./custom-binding/getting-started/installation.md)

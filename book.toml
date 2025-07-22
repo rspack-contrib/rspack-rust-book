@@ -7,3 +7,9 @@ title = "Rspack Rust Book"
 [output.html]
 git-repository-url = "https://github.com/rspack-contrib/rspack-rust-book/tree/main"
 edit-url-template = "https://github.com/rspack-contrib/rspack-rust-book/tree/main/{path}"
+additional-js = ["mermaid.min.js", "mermaid-init.js"]
+
+[preprocessor]
+
+[preprocessor.mermaid]
+command = "mdbook-mermaid"
