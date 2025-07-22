@@ -32,13 +32,11 @@ The _N-API_ glue layer of Rspack.
 
 This layer contains a glue code that bridges the gap between _N-API_-compatible runtimes, which, most of the time, is [Node.js](https://nodejs.org) and [Rust Core crates](https://github.com/web-infra-dev/rspack/tree/main/crates).
 
-It compiles to the _Node.js Addon_ (`*.node` file) located in `npm:@rspack/binding` and loaded by `npm:@rspack/binding`. The functionalities that `npm:@rspack/binding` provides are mostly implemented in `crate:rspack_binding_api`.
-
 ### [`npm:@rspack/binding`](https://github.com/web-infra-dev/rspack/tree/main/crates/node_binding)
 
 The _Node.js Addon_ of Rspack.
 
-This layer contains the compiled glue layer of `crate:rspack_binding_api` with [NAPI-RS](https://github.com/napi-rs/napi-rs). The functionalities that `npm:@rspack/core` provides are mostly exposed by the _Node.js Addon_ in `npm:@rspack/binding`.
+This layer links `crate:rspack_binding_api` and compiles it into a _Node.js Addon_ (a `*.node` file) with [NAPI-RS](https://github.com/napi-rs/napi-rs). The functionalities that `npm:@rspack/core` provides are mostly exposed by the _Node.js Addon_ in `npm:@rspack/binding`.
 
 Note: Maybe you have checked out the code on [npm](https://www.npmjs.com/package/@rspack/binding?activeTab=code) and it does not contain the `*.node` file. This is because the `*.node` files are dispatched by the `@rspack/binding-*` packages (e.g. `@rspack/binding-darwin-arm64`) for different platforms. Don't worry about this at the moment. We will get into the details in the custom binding section.
 
