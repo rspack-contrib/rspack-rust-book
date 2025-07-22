@@ -9,6 +9,11 @@ git-repository-url = "https://github.com/rspack-contrib/rspack-rust-book/tree/ma
 edit-url-template = "https://github.com/rspack-contrib/rspack-rust-book/tree/main/{path}"
 additional-js = ["mermaid.min.js", "mermaid-init.js"]
 
+[output.linkcheck]
+traverse-parent-directories = false
+optional = true
+follow-web-links = true
+
 [preprocessor]
 
 [preprocessor.mermaid]
