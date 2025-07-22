@@ -52,6 +52,8 @@ The internal of `npm:@rspack/core` is written in JavaScript. It bridges the gap 
 
 ## How Rspack _Custom Binding_ Works
 
+Rspack _Custom Binding_
+
 ```mermaid
 flowchart LR
     subgraph Before ["_Before_"]
