@@ -52,6 +52,16 @@ The internal of `npm:@rspack/core` is written in JavaScript. It bridges the gap 
 
 ## How Rspack _Custom Binding_ Works
 
+Let's use the diagram below to understand how a custom binding works. It shows a "_Before_" state, representing the standard Rspack setup, and an "_After_" state, which illustrates the custom binding approach.
+
+In the **_Before_** state, your project uses the default Rspack binding. This is created solely from `crate:rspack_binding_api`, the core glue layer between Rust and Node.js.
+
+In the **_After_** state, you introduce your own native code. As the diagram shows, your **User Customizations** (like custom Rust plugins) are combined with the original `crate:rspack_binding_api`.
+
+This combination produces a new, personalized **Custom Binding**. This becomes your project's new Node.js addon, allowing you to inject high-performance, custom logic directly into Rspack's build process.
+
+Crucially, you can continue to use [`npm:@rspack/core`](#npmrspackcore) with your custom binding. This allows you to benefit from native performance and customization without rewriting the JavaScript API layer, reusing all the features it provides. We will cover how to integrate `@rspack/core` with a custom binding in a later section.
+
 ```mermaid
 flowchart LR
     subgraph Before ["_Before_"]
