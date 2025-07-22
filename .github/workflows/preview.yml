@@ -1,0 +1,52 @@
+name: Deploy PR previews
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+
+concurrency: preview-${{ github.ref }}
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup mdBook
+        if: github.event.action != 'closed'
+        uses: peaceiris/actions-mdbook@v1
+        with:
+          mdbook-version: 'latest'
+
+      - name: Setup mdBook mermaid
+        if: github.event.action != 'closed'
+        run: |
+          mkdir -p mdbook-mermaid
+          curl -Lf https://github.com/badboy/mdbook-mermaid/releases/download/v0.15.0/mdbook-mermaid-v0.15.0-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=./mdbook-mermaid
+          echo "$(pwd)/mdbook-mermaid" >> $GITHUB_PATH
+
+      - name: Setup mdBook linkcheck
+        if: github.event.action != 'closed'
+        run: |
+          mkdir -p mdbook-linkcheck
+          curl -Lf https://github.com/Michael-F-Bryan/mdbook-linkcheck/releases/download/v0.7.7/mdbook-linkcheck.x86_64-unknown-linux-gnu.zip -o mdbook-linkcheck.zip
+          unzip mdbook-linkcheck.zip -d ./mdbook-linkcheck
+          chmod +x ./mdbook-linkcheck/mdbook-linkcheck
+          echo "$(pwd)/mdbook-linkcheck" >> $GITHUB_PATH
+
+      - name: Build
+        if: github.event.action != 'closed'
+        run: mdbook build
+
+      - name: Deploy preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: ./book/html/
