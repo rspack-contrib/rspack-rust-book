@@ -1,5 +1,13 @@
 # Getting Started
 
+## Rationale of _Rspack Custom Binding_
+
+The reason why Rspack is so fast is that it's written in Rust and so as the Rspack's internal builtin plugins and builtin loaders.
+
+For most of the time, I assume you've been using [Rspack JavaScript API](https://rspack.rs/api/index.html) and writing [Rspack JavaScript Plugins](https://rspack.rs/api/plugin-api). And you might probably heard there're some overheads when using JavaScript API. The rumour is true! Rspack is mostly written in Rust and providing the adapting layer with JavaScript API requires a lot of hassle of passing values back and forth between Rust and JavaScript. This creates a lot of overheads and performance issues.
+
+But have you ever wondered if there's a way to extend Rspack's functionality by writing native Rust code and not requiring to sacrifice the performance or if you're able to use the rich Rust APIs? And the answer is yes. This is where _Rspack Custom Binding_ comes in.
+
 To get started with _Rspack Custom Binding_, you need to know the surface level of how _Rspack binding_ works.
 
 ## How Rspack Binding Works
@@ -46,11 +54,11 @@ The internal of `npm:@rspack/core` is written in JavaScript. It bridges the gap 
 
 `npm:@rspack/cli` is a command line tool that uses `npm:@rspack/core` to build your project.
 
-## How Rspack _Custom Binding_ Works
+## How _Rspack Custom Binding_ Works
 
-Let's use the diagram below to understand how a custom binding works. It shows a "_Before_" state, representing the standard Rspack setup, and an "_After_" state, which illustrates the custom binding approach.
+Let's use the diagram below to understand how a _custom binding_ works. It shows a "_Before_" state, representing the standard Rspack setup, and an "_After_" state, which illustrates the _custom binding_ approach.
 
-In the **_Before_** state, your project uses the default Rspack binding. This is created solely from `crate:rspack_binding_api`, the core glue layer between Rust and Node.js.
+In the **_Before_** state, your project uses the default _Rspack binding_. This is created solely from `crate:rspack_binding_api`, the core glue layer between Rust and Node.js.
 
 In the **_After_** state, you introduce your own native code. As the diagram shows, your **User Customizations** (like custom Rust plugins) are combined with the original `crate:rspack_binding_api`.
 
