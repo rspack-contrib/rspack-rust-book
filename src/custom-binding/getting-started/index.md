@@ -1,12 +1,10 @@
 # Getting Started
 
-To get started with _Rspack Custom Binding_, you need to know the surface level of how Rspack binding works.
+To get started with _Rspack Custom Binding_, you need to know the surface level of how _Rspack binding_ works.
 
 ## How Rspack Binding Works
 
-This is the binding architecture of Rspack.
-
-If you are using the `@rspack/cli` or `@rspack/core` and not knowing what a _custom binding_ is, you are using this. It's a simple architecture that allows you to extend Rspack's functionality by leveraging the [Rspack JavaScript API](https://rspack.rs/api/index.html). It's just the same as how you use the [webpack JavaScript API](https://webpack.js.org/api/) to extend webpack.
+If you are using the `@rspack/cli` or `@rspack/core` and not knowing what a _custom binding_ is, you are using _Rspack binding_. It's a simple architecture that allows you to extend Rspack's functionality by leveraging the [Rspack JavaScript API](https://rspack.rs/api/index.html). It's just the same as how you use the [Webpack JavaScript API](https://webpack.js.org/api/) to extend Webpack.
 
 Let's take a deep dive into the architecture. It contains 3 parts:
 
