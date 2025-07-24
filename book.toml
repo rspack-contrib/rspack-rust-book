@@ -7,8 +7,8 @@ title = "Rspack Rust Book"
 [output.html]
 git-repository-url = "https://github.com/rspack-contrib/rspack-rust-book/tree/main"
 edit-url-template = "https://github.com/rspack-contrib/rspack-rust-book/tree/main/{path}"
-additional-css = ["mermaid-anti-flash.css"]
-additional-js = ["mermaid-anti-flash.js", "mermaid.min.js", "mermaid-init.js"]
+additional-css = ["res/mermaid-anti-flash.css"]
+additional-js = ["res/mermaid-anti-flash.js", "res/mermaid.min.js", "res/mermaid-init.js"]
 
 [output.linkcheck]
 traverse-parent-directories = false
