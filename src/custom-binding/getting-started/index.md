@@ -14,4 +14,4 @@ If you are not familiar with writing _Node.js addons_ and _N-API_ in Rust, don't
 
 ## Next Steps
 
-Once you understand the rationale and architecture, proceed to the [Installation](./installation.md) guide to set up your development environment.
+Once you understand the rationale and architecture, proceed to the [Create From Template](./create-from-template.md) guide to set up your development environment.

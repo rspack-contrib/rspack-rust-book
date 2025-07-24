@@ -6,4 +6,4 @@
 
 - [Getting Started](./custom-binding/getting-started/index.md)
   - [Rationale](./custom-binding/getting-started/rationale.md)
-  - [Installation](./custom-binding/getting-started/installation.md)
+  - [Create from Template](./custom-binding/getting-started/create-from-template.md)
