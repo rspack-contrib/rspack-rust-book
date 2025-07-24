@@ -44,7 +44,7 @@ This command reads the `pnpm-workspace.yaml` configuration and installs dependen
 
 You should see output similar to this:
 
-```
+```text
 ❯ pnpm install
 Scope: all 3 workspace projects
 Lockfile is up to date, resolution step is skipped
@@ -79,7 +79,7 @@ This command will trigger [NAPI-RS](https://napi.rs/) compilation to build the R
 
 You should see output similar to this:
 
-```
+```text
 ❯ pnpm build
 
 > @rspack-template/test-core@0.0.2 build /my-rspack-binding
@@ -126,7 +126,7 @@ This will execute the example plugin using your compiled binding, demonstrating 
 
 If the example runs successfully, your setup is complete and ready for development:
 
-```
+```text
 ❯ node examples/plugin/build.js
 assets by status 1.46 KiB [cached] 1 asset
 runtime modules 93 bytes 2 modules
