@@ -2,7 +2,7 @@
 
 The reason why Rspack is so fast is that it's written in Rust and so as the Rspack's internal builtin plugins and builtin loaders.
 
-For most of the time, I assume you've been using [Rspack JavaScript API](https://rspack.rs/api/index.html) and writing [Rspack JavaScript Plugins](https://rspack.rs/api/plugin-api). And you might probably heard there're some overheads when using JavaScript API. The rumour is true! Rspack is mostly written in Rust and providing the adapting layer with JavaScript API requires a lot of hassle of passing values back and forth between Rust and JavaScript. This creates a lot of overheads and performance issues.
+For most of the time, We assume you've been using [Rspack JavaScript API](https://rspack.rs/api/index.html) and writing [Rspack JavaScript Plugins](https://rspack.rs/api/plugin-api). And you might probably heard there're some overheads when using JavaScript API. The rumour is true! Rspack is mostly written in Rust and providing the adapting layer with JavaScript API requires a lot of hassle of passing values back and forth between Rust and JavaScript. This creates a lot of overheads and performance issues.
 
 But have you ever wondered if there's a way to extend Rspack's functionality by writing native Rust code and not requiring to sacrifice the performance or if you're able to use the rich Rust APIs? And the answer is yes. This is where _Rspack Custom Binding_ comes in.
 
@@ -88,3 +88,7 @@ flowchart LR
     style Before stroke-dasharray: 5 5
     style After stroke-dasharray: 5 5
 ```
+
+## Next Steps
+
+Now you have a basic understanding of how _Rspack Custom Binding_ works. Let's move on to the [Create From Template](./create-from-template.md) guide to set up your development environment.
