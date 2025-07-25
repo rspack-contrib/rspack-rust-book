@@ -68,7 +68,7 @@ For example: [PR: chore: release v0.0.1](https://github.com/h-a-n-a/my-rspack-bi
 
 The workflow will be triggered and you can see the progress in the **Actions** tab.
 
-For example: [Release v0.0.1](https://github.com/h-a-n-a/my-rspack-binding/actions/runs/16518562354)
+For example: [Release v0.0.1](https://github.com/h-a-n-a/my-rspack-binding/actions/runs/16519440059)
 
 <img src="../../images/repository-actions-release-workflow.png" alt="Release workflow run" height="500" />
 
