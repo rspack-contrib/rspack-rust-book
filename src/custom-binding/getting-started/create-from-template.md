@@ -37,4 +37,8 @@ A successful run typically takes around 20 minutes and generates platform-specif
 
 ## Next Steps
 
-First, you'll need to [setup the repository locally](./setup.md). Then we will walk through the repository structure using the `examples/plugin` case study to help you understand how all the pieces work together.
+In this chapter, we have learned:
+
+- To create a new repository based on the template.
+
+In the next chapter, we will learn how to [setup the repository locally](./setup.md).

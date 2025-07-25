@@ -136,4 +136,10 @@ Rspack 1.4.10 compiled successfully in 30 ms
 
 ## Next Steps
 
-Once setup is complete, we will [walkthrough a `MyBannerPlugin`](./create-plugin.md) as a practical example to demonstrate how to build custom rspack bindings. This plugin will show you the complete workflow from Rust implementation to JavaScript integration.
+In this chapter, we have learned:
+
+- To setup the repository locally.
+- To build the project.
+- To verify the setup.
+
+In the next chapter, we will walk you through the [`MyBannerPlugin`](./create-plugin.md) as a practical example to demonstrate how to build custom rspack bindings. This plugin will show you the complete workflow from Rust implementation to JavaScript integration.
