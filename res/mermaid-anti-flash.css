@@ -1,0 +1,78 @@
+/* Mermaid anti-flash styles - Takes effect at the earliest stage of page loading */
+
+/* Create a container for the placeholder */
+.mermaid:not(.mermaid-ready),
+pre.mermaid:not(.mermaid-ready),
+code.language-mermaid:not(.mermaid-ready) {
+  position: relative;
+  display: block;
+  /* Set a fixed height for both the placeholder and the final diagram */
+  height: 300px;
+  overflow: hidden; /* Ensure nothing spills out */
+  /* Force-hide the raw text content to prevent any flash */
+  font-size: 0 !important;
+  color: transparent !important;
+  margin: 1em 0; /* Add some space around the container */
+}
+
+/* The "shield" placeholder that covers the flashing content */
+.mermaid:not(.mermaid-ready)::before,
+pre.mermaid:not(.mermaid-ready)::before,
+code.language-mermaid:not(.mermaid-ready)::before {
+  content: 'Loading diagram...';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Use mdbook's theme variables for a perfect match */
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 14px; /* Restore font size for the placeholder text */
+  font-style: italic;
+  z-index: 10;
+  opacity: 0; /* Hide the placeholder by default */
+  /* Show placeholder only if rendering takes more than 50ms */
+  animation: fadeInPlaceholder 0.2s 50ms ease-in forwards;
+}
+
+/* Keyframes for the placeholder fade-in animation */
+@keyframes fadeInPlaceholder {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Hide the placeholder when the diagram is ready */
+.mermaid.mermaid-ready::before,
+pre.mermaid.mermaid-ready::before,
+code.language-mermaid.mermaid-ready::before {
+  display: none !important;
+}
+
+/* Transition effect for the diagram appearing */
+.mermaid.mermaid-ready {
+  transition: opacity 0.3s ease-in-out;
+  /* Restore original font size once ready */
+  font-size: inherit !important;
+  color: inherit !important;
+}
+
+/* Ensure SVG fills the container while maintaining aspect ratio */
+.mermaid svg {
+  max-width: 100%;
+  height: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.mermaid:not(.mermaid-ready) > svg {
+  opacity: 0;
+}
+
+.mermaid.mermaid-ready > svg {
+  opacity: 1;
+}
