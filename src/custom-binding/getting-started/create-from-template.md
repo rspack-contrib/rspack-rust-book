@@ -28,7 +28,7 @@ A successful run typically takes around 20 minutes and generates platform-specif
 ## Template Structure
 
 - **`crates/binding/`** - Rust binding implementation
-- **`examples/plugin/`** - Plugin examples
+- **`examples/use-plugin/`** - Plugin examples
 - **`lib/`** - JavaScript/TypeScript interface code
 - **`Cargo.toml`**, **`package.json`** - Package configurations
 - **`.github/`**, **`.cargo/`** - CI/CD and tooling setup
