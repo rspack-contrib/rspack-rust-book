@@ -119,7 +119,7 @@ The build process compiles the Rust code in `crates/binding` into a native Node.
 To verify that everything is working correctly, run the example plugin:
 
 ```bash
-node examples/plugin/build.js
+node examples/use-plugin/build.js
 ```
 
 This will execute the example plugin using your compiled binding, demonstrating that the Rust-JavaScript integration is working properly.
@@ -127,7 +127,7 @@ This will execute the example plugin using your compiled binding, demonstrating 
 If the example runs successfully, your setup is complete and ready for development:
 
 ```text
-❯ node examples/plugin/build.js
+❯ node examples/use-plugin/build.js
 assets by status 1.46 KiB [cached] 1 asset
 runtime modules 93 bytes 2 modules
 ./src/index.js 1 bytes [built] [code generated]
