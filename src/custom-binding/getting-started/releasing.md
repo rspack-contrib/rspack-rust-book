@@ -6,6 +6,56 @@ This chapter covers releasing your plugin to npm using GitHub Actions. The templ
 
 ### Prerequisites
 
+Before releasing, ensure you have completed these requirements:
+
+#### 1. Update Repository Information
+
+You **must** update the repository URLs in your `package.json` files to match your actual repository, otherwise you'll encounter a sigstore provenance verification error during publishing:
+
+```text
+npm error 422 Unprocessable Entity - PUT https://registry.npmjs.org/@your-scope%2fyour-package-darwin-x64
+Error verifying sigstore provenance bundle: Failed to validate repository information:
+package.json: "repository.url" is "git+https://github.com/rspack-contrib/rspack-binding-template.git",
+expected to match "https://github.com/your-username/your-repository" from provenance
+```
+
+Update the following files:
+
+- `package.json` - Update the `repository.url`, `bugs.url`, and `homepage` fields
+- `crates/binding/package.json` - Update the `repository.url`, `bugs.url`, and `homepage` fields
+
+For example, change:
+
+```json
+{
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rspack-contrib/rspack-binding-template.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rspack-contrib/rspack-binding-template/issues"
+  },
+  "homepage": "https://github.com/rspack-contrib/rspack-binding-template#readme"
+}
+```
+
+To:
+
+```json
+{
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-username/your-repository.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/your-repository/issues"
+  },
+  "homepage": "https://github.com/your-username/your-repository#readme"
+}
+```
+
+#### 2. Configure NPM Token
+
 The release workflow requires an [_Environment secret_](https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/using-secrets-in-github-actions#creating-secrets-for-an-environment) with `NPM_TOKEN` to be set in the repository settings:
 
 1. On GitHub, navigate to the main page of the repository.
