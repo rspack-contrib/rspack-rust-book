@@ -396,4 +396,4 @@ In this chapter, we have learned:
 - To reuse the `@rspack/core` package to create a new core package to replace the original `@rspack/core` package.
 - To use the plugin in the rspack configuration.
 
-In the next chapter, we will learn to [release](./releasing.md) the plugin to npm with [Github Actions](https://docs.github.com/actions).
+In the next chapter, we will learn to [release](./release.md) the plugin to npm with [Github Actions](https://docs.github.com/actions).

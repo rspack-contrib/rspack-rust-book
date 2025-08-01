@@ -5,8 +5,11 @@
 # Rspack Custom Binding
 
 - [Getting Started](./custom-binding/getting-started/index.md)
+
   - [Rationale](./custom-binding/getting-started/rationale.md)
   - [Create from Template](./custom-binding/getting-started/create-from-template.md)
-  - [Setup](./custom-binding/getting-started/setup.md)
-  - [Create a Plugin](./custom-binding/getting-started/create-plugin.md)
-  - [Releasing](./custom-binding/getting-started/releasing.md)
+
+- [First Custom Binding](./custom-binding/first-custom-binding/index.md)
+  - [Setup](./custom-binding/first-custom-binding/setup.md)
+  - [Create a Plugin](./custom-binding/first-custom-binding/create-plugin.md)
+  - [Release](./custom-binding/first-custom-binding/release.md)

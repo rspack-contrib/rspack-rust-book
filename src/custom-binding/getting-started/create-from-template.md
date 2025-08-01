@@ -41,4 +41,4 @@ In this chapter, we have learned:
 
 - To create a new repository based on the template.
 
-In the next chapter, we will learn how to [setup the repository locally](./setup.md).
+In the next chapter, we will learn how to [setup the repository locally](../first-custom-binding/setup.md).
