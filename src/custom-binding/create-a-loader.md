@@ -94,6 +94,16 @@ impl Loader for MyBannerLoader {
     Ok(())
   }
 }
+
+
+// Implement the Identifiable trait to provide a unique identifier for the loader
+// This identifier is used by Rspack's internal caching system to identify
+// and track this specific loader instance
+impl rspack_collections::Identifiable for MyBannerLoader {
+  fn identifier(&self) -> rspack_collections::Identifier {
+    rspack_collections::Identifier::from("builtin:my-banner-loader")
+  }
+}
 ```
 
 ### 2.3. Conclusion
