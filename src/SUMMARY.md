@@ -20,3 +20,4 @@
 - [References](./custom-binding/references/index.md)
 
     - [Bump Rspack version](./custom-binding/references/bump-rspack-version.md)
+    - [GitHub Workflow](./custom-binding/references/github-workflow.md)
