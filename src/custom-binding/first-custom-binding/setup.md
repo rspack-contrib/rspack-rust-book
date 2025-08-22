@@ -1,15 +1,15 @@
 # Setup
 
-This section will guide you through setting up your newly created rspack-binding repository for local development.
+This section guides you through setting up your newly created rspack-binding repository for local development.
 
 ## Prerequisites
 
-Before you begin, make sure you have the following installed:
+Ensure you have the following installed:
 
 - **Node.js** (>= 18.0.0)
 - **Rust** (latest stable version)
 
-This repository uses [Corepack](https://github.com/nodejs/corepack) to manage package managers, so you don't need to install pnpm manually.
+This repository uses [Corepack](https://github.com/nodejs/corepack) to manage package managers, eliminating the need to install pnpm manually.
 
 > **Note:** According to the [official documentation](https://github.com/nodejs/corepack?tab=readme-ov-file#manual-installs): "Corepack is distributed with Node.js from version 14.19.0 up to (but not including) 25.0.0. Run `corepack enable` to install the required Yarn and pnpm binaries on your path."
 >
@@ -67,7 +67,7 @@ Downloading @rspack/binding-darwin-arm64@1.4.10: 17.67 MB/17.67 MB, done
 Done in 4.1s using pnpm v10.13.1
 ```
 
-> **For the following tutorials:** We will use `@rspack-template/test-binding` and `@rspack-template/test-core` as example package names. We'll perform a global replacement of these package names and reinstall dependencies to demonstrate the complete development workflow. See [this commit](https://github.com/h-a-n-a/my-rspack-binding/commit/2ce89d6d3a1e08019458214a7bb1f3eb1720d82b) for reference.
+> **For the following tutorials:** We use `@rspack-template/test-binding` and `@rspack-template/test-core` as example package names. We'll perform a global replacement of these package names and reinstall dependencies to demonstrate the complete development workflow. See [this commit](https://github.com/h-a-n-a/my-rspack-binding/commit/2ce89d6d3a1e08019458214a7bb1f3eb1720d82b) for reference.
 
 ### 4. Build the project
 
@@ -75,7 +75,7 @@ Done in 4.1s using pnpm v10.13.1
 pnpm build
 ```
 
-This command will trigger [NAPI-RS](https://napi.rs/) compilation to build the Rust binding. NAPI-RS is a framework for building pre-compiled Node.js addons in Rust, providing a safe and efficient way to call Rust code from JavaScript.
+This command triggers [NAPI-RS](https://napi.rs/) compilation to build the Rust binding. NAPI-RS is a framework for building pre-compiled Node.js addons in Rust, providing a safe and efficient way to call Rust code from JavaScript.
 
 You should see output similar to this:
 
@@ -122,7 +122,7 @@ To verify that everything is working correctly, run the example plugin:
 node examples/use-plugin/build.js
 ```
 
-This will execute the example plugin using your compiled binding, demonstrating that the Rust-JavaScript integration is working properly.
+This executes the example plugin using your compiled binding, demonstrating that the Rust-JavaScript integration works properly.
 
 If the example runs successfully, your setup is complete and ready for development:
 
@@ -134,12 +134,12 @@ runtime modules 93 bytes 2 modules
 Rspack 1.4.10 compiled successfully in 30 ms
 ```
 
-## Next Steps
+## Summary
 
-In this chapter, we have learned:
+You've successfully:
 
-- To setup the repository locally.
-- To build the project.
-- To verify the setup.
+- Set up the repository locally
+- Built the project using NAPI-RS
+- Verified the setup with the example plugin
 
-In the next chapter, we will walk you through the [`MyBannerPlugin`](./create-plugin.md) as a practical example to demonstrate how to build custom rspack bindings. This plugin will show you the complete workflow from Rust implementation to JavaScript integration.
+Next, you'll learn to create the [`MyBannerPlugin`](./create-plugin.md) as a practical example demonstrating how to build custom Rspack bindings. This plugin shows the complete workflow from Rust implementation to JavaScript integration.

@@ -1,8 +1,8 @@
 # Release
 
-This chapter covers releasing your plugin to npm using GitHub Actions. The template includes a complete [release workflow](https://github.com/rspack-contrib/rspack-binding-template/blob/main/.github/workflows/release.yml) that handles building, testing, and publishing automatically.
+This chapter covers releasing your plugin to npm using GitHub Actions. The template includes a complete [release workflow](https://github.com/rspack-contrib/rspack-binding-template/blob/main/.github/workflows/release.yml) that automatically handles building, testing, and publishing.
 
-## Release workflow
+## Release Workflow
 
 ### Prerequisites
 
@@ -10,7 +10,7 @@ Before releasing, ensure you have completed these requirements:
 
 #### 1. Update Repository Information
 
-You **must** update the repository URLs in your `package.json` files to match your actual repository, otherwise you'll encounter a sigstore provenance verification error during publishing:
+You **must** update the repository URLs in your `package.json` files to match your actual repository, otherwise you'll encounter a Sigstore provenance verification error during publishing:
 
 ```text
 npm error 422 Unprocessable Entity - PUT https://registry.npmjs.org/@your-scope%2fyour-package-darwin-x64
@@ -86,43 +86,43 @@ The release workflow requires an [_Environment secret_](https://docs.github.com/
 
 <img src="../../images/repository-settings-environments-secrets.png" alt="Repository settings environments secrets" height="300" />
 
-### 1. Create a releasing branch
+### 1. Create a Release Branch
 
-To release a new version, you need to create a new branch. You can use any branch name you want, but it's recommended to use a name that indicates the version you're releasing.
+To release a new version, create a new branch. You can use any branch name, but it's recommended to use a name indicating the version you're releasing.
 
-For example, if you're releasing version `0.0.1`, you can create a branch named `release-v0.0.1`.
+For example, if you're releasing version `0.0.1`, create a branch named `release-v0.0.1`.
 
 ```bash
 git checkout -b release-v0.0.1
 ```
 
-### 2. Trigger a version bump
+### 2. Trigger a Version Bump
 
-Before releasing, you need to bump the versions in both `package.json` and `crates/binding/package.json`.
+Before releasing, bump the versions in both `package.json` and `crates/binding/package.json`.
 
-rspack-binding-template does not come with any version bump tool. You can either manually bump the versions in both `package.json`s or setup any version bump tool.
+rspack-binding-template doesn't include any version bump tool. You can either manually bump the versions in both `package.json` files or set up any version bump tool.
 
 For example: [PR: chore: release v0.0.1](https://github.com/h-a-n-a/my-rspack-binding/pull/1)
 
-### 3. Trigger the release workflow
+### 3. Trigger the Release Workflow
 
 1. Navigate to **Actions** → **Release** in your repository
 2. Click **Run workflow**
 3. Configure options:
-   - **Use workflow from**: Select the branch you want to release from. (In this case, it's `release-v0.0.1`)
+   - **Use workflow from**: Select the branch to release from (in this case, `release-v0.0.1`)
    - **Dry-run mode**: Test without publishing
    - **NPM tag**: Choose `latest`, `alpha`, `beta`, or `canary`
-4. Click **Run workflow** button in the popover.
+4. Click the **Run workflow** button in the popover
 
 <img src="../../images/repository-actions-release.png" alt="Release workflow selection" height="500" />
 
-The workflow will be triggered and you can see the progress in the **Actions** tab.
+The workflow will trigger and you can monitor progress in the **Actions** tab.
 
 For example: [Release v0.0.1](https://github.com/h-a-n-a/my-rspack-binding/actions/runs/16519440059)
 
 <img src="../../images/repository-actions-release-workflow.png" alt="Release workflow run" height="500" />
 
-## Deep Dive into the Workflow
+## Workflow Deep Dive
 
 The workflow consists of three sequential jobs:
 
@@ -146,7 +146,7 @@ Validates the built bindings using the test suite to ensure everything works cor
 
 ### 3. Release
 
-Publishes the packages to npm registry:
+Publishes the packages to the npm registry:
 
 1. **Environment Setup**: Configures Node.js 22, pnpm, and dependency caching
 2. **Artifact Processing**: Downloads compiled bindings and organizes them into platform-specific npm packages using `pnpm napi create-npm-dirs` and `pnpm napi artifacts`
@@ -155,10 +155,10 @@ Publishes the packages to npm registry:
 
 ## Package Provenance
 
-All packages published through this workflow include [npm provenance](https://docs.npmjs.com/generating-provenance-statements#about-npm-provenance) statements, which enhance supply-chain security by:
+All packages published through this workflow include [npm provenance](https://docs.npmjs.com/generating-provenance-statements#about-npm-provenance) statements, enhancing supply-chain security by:
 
 - **Provenance attestation**: Publicly links packages to their source code and build instructions, allowing developers to verify where and how packages were built
-- **Publish attestation**: Generated by npm registry when packages are published by authorized users
+- **Publish attestation**: Generated by the npm registry when packages are published by authorized users
 
 The workflow automatically enables provenance using the `--provenance` flag. Packages are signed by [Sigstore](https://docs.npmjs.com/generating-provenance-statements#about-sigstore) public servers and logged in a public transparency ledger, providing verifiable proof of the package's origin and build process.
 

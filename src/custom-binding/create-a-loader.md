@@ -1,18 +1,18 @@
 # Create a Loader
 
-In this chapter, we will explore creating a custom loader for Rspack using the `MyBannerLoader` example. While the loader is already implemented in the template, we will walk you through how to create this loader from scratch and how to use it in JavaScript. This will demonstrate the complete workflow from Rust implementation to JavaScript integration.
+This chapter explores creating a custom loader for Rspack using the `MyBannerLoader` example. While the loader is already implemented in the template, we'll walk you through creating this loader from scratch and using it in JavaScript. This demonstrates the complete workflow from Rust implementation to JavaScript integration.
 
 ## What is `builtin:my-banner-loader`?
 
-The `builtin:my-banner-loader` is a simple loader that prepends a configurable banner comment to the top of the modules.
+`builtin:my-banner-loader` is a simple loader that prepends a configurable banner comment to the top of modules.
 
 ## Prerequisites
 
-Before starting this tutorial, make sure you have completed the [setup process](./first-custom-binding/setup.md) and can successfully run the example plugin.
+Before starting this tutorial, ensure you've completed the [setup process](./first-custom-binding/setup.md) and can successfully run the example plugin.
 
 ## Overview
 
-We will guide you through the loader creation process in the following steps:
+We'll guide you through the loader creation process in these steps:
 
 1. **Understand the Loader Structure** - Examine the basic Rust loader structure
 2. **Implement the Loader Logic** - Understand how the banner functionality works with async traits and caching
@@ -21,31 +21,31 @@ We will guide you through the loader creation process in the following steps:
 5. **JavaScript Integration** - Learn the two-step process: register plugin, then use loader
 6. **Testing the Loader** - Learn how to verify the loader works correctly
 
-**Important:** Builtin loaders require plugin registration before they can be used in build configurations.
+> **⚠️ Important:** Builtin loaders require plugin registration before they can be used in build configurations.
 
-Let's explore the `MyBannerLoader` implementation!
+Let's explore the `MyBannerLoader` implementation.
 
 ## 1. Understand the Loader Structure
 
-The `MyBannerLoader` is implemented in Rust and follows the standard loader structure along with a companion plugin for registration.
+`MyBannerLoader` is implemented in Rust and follows the standard loader structure with a companion plugin for registration.
 
 - `crates/binding/src/lib.rs` - The glue code that exports both the loader and plugin to JavaScript
 - `crates/binding/src/loader.rs` - The `MyBannerLoader` implementation and `MyBannerLoaderPlugin`
 
 ## 2. Implement the Loader Logic
 
-`MyBannerLoader` is a loader that prepends a configurable banner comment to source files during the build process.
+`MyBannerLoader` prepends a configurable banner comment to source files during the build process.
 
-Before we start, be sure to add the following dependencies to your `Cargo.toml` file:
+Before starting, add these dependencies to your `Cargo.toml` file:
 
 - `rspack_core` - The Rspack core API
 - `rspack_error` - The Rspack error handling API
 - `rspack_cacheable` - For making loaders cacheable
 - `async_trait` - For async trait implementations
 
-### 2.1. Initialize the Loader
+### 2.1 Initialize the Loader
 
-The `MyBannerLoader` is implemented as a struct with a `banner` field. The `banner` field is a `String` that contains the banner comment to prepend.
+`MyBannerLoader` is implemented as a struct with a `banner` field containing the banner comment to prepend.
 
 ```rust,ignore
 use std::sync::Arc;
@@ -71,11 +71,11 @@ impl MyBannerLoader {
 }
 ```
 
-### 2.2. Implement the Loader Trait with Async Processing
+### 2.2 Implement the Loader Trait with Async Processing
 
 The loader implements the `Loader` trait using async processing and caching support.
 
-> **Note:** Use `#[rspack_cacheable::cacheable]` to make your loader cacheable, as rspack binding supports persistent cache for better performance. This ensures that unchanged files are not reprocessed, significantly improving build times.
+> **Note:** Use `#[rspack_cacheable::cacheable]` to make your loader cacheable, as Rspack binding supports persistent cache for better performance. This ensures unchanged files aren't reprocessed, significantly improving build times.
 
 ```rust,ignore
 #[rspack_cacheable::cacheable_dyn]
@@ -106,17 +106,17 @@ impl rspack_collections::Identifiable for MyBannerLoader {
 }
 ```
 
-### 2.3. Conclusion
+### 2.3 Conclusion
 
-In this section, we have learned how to create a loader in Rust with async support and caching. The loader processes source content by prepending a banner string.
+You've learned how to create a loader in Rust with async support and caching. The loader processes source content by prepending a banner string.
 
-In the next section, we will learn how to register this loader through a plugin.
+Next, you'll learn how to register this loader through a plugin.
 
 ## 3. Loader Plugin Integration
 
 **Critical Step:** Custom loaders must be registered via a plugin before they can be used in build configurations. This is accomplished through a companion plugin.
 
-### 3.1. Create the Loader Plugin
+### 3.1 Create the Loader Plugin
 
 ```rust,ignore
 #[plugin]
@@ -156,29 +156,29 @@ impl rspack_core::Plugin for MyBannerLoaderPlugin {
 }
 ```
 
-### 3.2. Why Plugin Registration is Required
+### 3.2 Why Plugin Registration is Required
 
-Loaders need to be registered in Rspack's loader resolution system. The `MyBannerLoaderPlugin`:
+Loaders must be registered in Rspack's loader resolution system. The `MyBannerLoaderPlugin`:
 
 1. **Registers the loader** with a specific name (`builtin:my-banner-loader`)
 2. **Makes it available** for use in build configurations
 3. **Integrates with** Rspack's loader resolution mechanism
 
-Without this plugin registration, the loader would not be found when referenced in build configurations.
+Without this plugin registration, the loader won't be found when referenced in build configurations.
 
-### 3.3. Conclusion
+### 3.3 Conclusion
 
-In this section, we learned that custom loaders require plugin registration. The companion plugin registers the loader in Rspack's resolution system, making it available for use.
+You've learned that custom loaders require plugin registration. The companion plugin registers the loader in Rspack's resolution system, making it available for use.
 
-In the next section, we will learn how to expose both components to JavaScript.
+Next, you'll learn how to expose both components to JavaScript.
 
 ## 4. NAPI Bindings
 
-In this section, we will learn how to expose both the loader and its registration plugin to JavaScript using NAPI bindings.
+This section covers exposing both the loader and its registration plugin to JavaScript using NAPI bindings.
 
-### 4.1. Expose Both Components to JavaScript
+### 4.1 Expose Both Components to JavaScript
 
-To use the loader in JavaScript, we need to expose both the loader logic and the registration plugin.
+To use the loader in JavaScript, expose both the loader logic and the registration plugin.
 
 Add these dependencies to your `Cargo.toml`:
 
@@ -206,19 +206,19 @@ register_plugin!("MyBannerLoaderPlugin", |_env: Env, _options: Unknown<'_>| {
 });
 ```
 
-### 4.2. Registration Pattern
+### 4.2 Registration Pattern
 
 The `register_plugin` macro creates the JavaScript binding for the plugin that registers our loader. This follows the same pattern as regular plugins but serves the specific purpose of loader registration.
 
-### 4.3. Conclusion
+### 4.3 Conclusion
 
-In this section, we exposed the loader registration plugin to JavaScript. This allows us to register the loader from JavaScript before using it in build configurations.
+You've exposed the loader registration plugin to JavaScript. This allows registering the loader from JavaScript before using it in build configurations.
 
 ## 5. JavaScript Integration
 
-In this section, we will learn the two-step process for using custom loaders: register the plugin, then use the loader.
+This section covers the two-step process for using custom loaders: register the plugin, then use the loader.
 
-### 5.1. Create JavaScript Plugin Wrapper
+### 5.1 Create JavaScript Plugin Wrapper
 
 First, create a wrapper for the loader registration plugin in your `lib/index.js`:
 
@@ -251,7 +251,7 @@ Object.defineProperty(core, 'MyBannerLoaderPlugin', {
 module.exports = core;
 ```
 
-### 5.2. Two-Step Usage Process
+### 5.2 Two-Step Usage Process
 
 **Step 1: Register the Loader Plugin**
 
@@ -295,29 +295,29 @@ const compiler = rspack({
 
 Once the plugin is registered, you can use the loader in module rules with the registered name `builtin:my-banner-loader`.
 
-### 5.3. Complete Example
+### 5.3 Complete Example
 
-Check out the `examples/use-loader/build.js` file in the [rspack-binding-template](https://github.com/rspack-contrib/rspack-binding-template/blob/main/examples/use-loader/build.js) repository for a complete working example.
+Check the `examples/use-loader/build.js` file in the [rspack-binding-template](https://github.com/rspack-contrib/rspack-binding-template/blob/main/examples/use-loader/build.js) repository for a complete working example.
 
 ## 6. Testing the Loader
 
-You can now run the example to see the loader in action:
+Run the example to see the loader in action:
 
 ```bash
 node examples/use-loader/build.js
 ```
 
-Check the output in the `dist/main.js` file, and you will see the banner comment added to the top of the modules.
+Check the output in the `dist/main.js` file to see the banner comment added to the top of the modules.
 
 
-## Next Steps
+## Summary
 
-In this chapter, we have learned:
+You've learned how to:
 
-- How to create a cacheable loader in Rust with async processing
-- The critical importance of plugin registration for custom loaders
-- How to expose both loader and registration plugin to JavaScript using NAPI bindings
-- The two-step process: register plugin first, then use loader
-- How to configure and test the loader in build configurations
+- Create a cacheable loader in Rust with async processing
+- Understand the critical importance of plugin registration for custom loaders
+- Expose both loader and registration plugin to JavaScript using NAPI bindings
+- Follow the two-step process: register plugin first, then use loader
+- Configure and test the loader in build configurations
 
 This pattern can be extended to create more complex loaders for various source transformations. The key concepts of plugin registration and cacheable implementation remain consistent across different loader implementations.

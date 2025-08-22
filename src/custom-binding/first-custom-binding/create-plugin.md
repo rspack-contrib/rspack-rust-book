@@ -1,10 +1,10 @@
 # Create a Plugin
 
-In this chapter, we will explore the `MyBannerPlugin` that has already been created in the template as a practical example. While the plugin is already implemented, We will walk you through how to create this plugin from scratch and how to use it in JavaScript. This will demonstrate the complete workflow from Rust implementation to JavaScript integration.
+This chapter explores the `MyBannerPlugin` that's already created in the template as a practical example. While the plugin is already implemented, we'll walk you through creating this plugin from scratch and using it in JavaScript. This demonstrates the complete workflow from Rust implementation to JavaScript integration.
 
 ## What is `MyBannerPlugin`?
 
-The `MyBannerPlugin` is a simple plugin that adds a banner comment to the top of generated JavaScript files.
+`MyBannerPlugin` is a simple plugin that adds a banner comment to the top of generated JavaScript files.
 
 ## Prerequisites
 
@@ -12,7 +12,7 @@ Before starting this tutorial, make sure you have completed the [setup process](
 
 ## Overview
 
-We will guide you through the plugin creation process in the following steps:
+We'll guide you through the plugin creation process in these steps:
 
 1. **Understand the Plugin Structure** - Examine the basic Rust plugin structure
 2. **Learn the Plugin Logic** - Understand how the banner functionality works
@@ -20,7 +20,7 @@ We will guide you through the plugin creation process in the following steps:
 4. **JavaScript Integration** - Learn how to use the plugin in JavaScript and rspack configuration
 5. **Testing the Plugin** - Learn how to verify the plugin works correctly
 
-Let's explore the `MyBannerPlugin` implementation!
+Let's explore the `MyBannerPlugin` implementation.
 
 ## 1. Understand the Plugin Structure
 
@@ -31,7 +31,7 @@ The `MyBannerPlugin` is implemented in Rust and follows the standard plugin stru
 
 ## 2. Learn the Plugin Logic
 
-`MyBannerPlugin` is a simple plugin that adds a banner comment to the top of generated `main.js` file.
+`MyBannerPlugin` adds a banner comment to the top of the generated `main.js` file.
 
 Before we start, be sure to add the following dependencies to your `Cargo.toml` file:
 
@@ -40,13 +40,13 @@ Before we start, be sure to add the following dependencies to your `Cargo.toml` 
 - `rspack_hook` - The Rspack hook API
 - `rspack_sources` - The Rspack source API, which is a port of webpack's [`webpack-sources`](https://github.com/webpack/webpack-sources)
 
-### 2.1. Initialize the Plugin
+### 2.1 Initialize the Plugin
 
-The `MyBannerPlugin` is implemented as a struct with a `banner` field. The `banner` field is a `String` that contains the banner comment. The `new` method is a constructor that takes a `String` and returns a `MyBannerPlugin` instance.
+`MyBannerPlugin` is implemented as a struct with a `banner` field containing the banner comment. The `new` method is a constructor that takes a `String` and returns a `MyBannerPlugin` instance.
 
-The `MyBannerPlugin` struct is annotated with `#[plugin]` to indicate that it is a plugin. The `#[plugin]` macro is provided by the `rspack_hook` crate.
+The `MyBannerPlugin` struct is annotated with `#[plugin]` to indicate it's a plugin. The `#[plugin]` macro is provided by the `rspack_hook` crate.
 
-It also implements the `Plugin` trait, which is provided by the `rspack_core` crate. The `Plugin` trait is a core trait for all plugins. It requires the `name` method to return the name of the plugin, and the `apply` method to apply the plugin to the compilation, which is just the same as the `apply` method in the [Rspack JavaScript Plugin API](https://rspack.rs/api/plugin-api).
+It also implements the `Plugin` trait from the `rspack_core` crate. The `Plugin` trait is core for all plugins, requiring the `name` method to return the plugin name and the `apply` method to apply the plugin to compilation, matching the `apply` method in the [Rspack JavaScript Plugin API](https://rspack.rs/api/plugin-api).
 
 In this example, the `name` method returns `"MyBannerPlugin"`, and the `apply` method is currently to be implemented.
 
@@ -79,15 +79,15 @@ impl Plugin for MyBannerPlugin {
 }
 ```
 
-### 2.2 Implement with Rust hooks
+### 2.2 Implement with Rust Hooks
 
-Just like hooks in the [Rspack JavaScript Plugin API](https://rspack.rs/api/plugin-api), hooks in Rust are implemented as a function that takes a reference to the plugin instance and a reference to the certain categories.
+Like hooks in the [Rspack JavaScript Plugin API](https://rspack.rs/api/plugin-api), Rust hooks are implemented as functions that take a reference to the plugin instance and a reference to certain categories.
 
-The `apply` method is called with a `PluginContext` instance and a `CompilerOptions` instance.
+The `apply` method is called with `PluginContext` and `CompilerOptions` instances.
 
-In this example, we will append the `banner` to the `main.js` file. So we need to implement the `process_assets` hook.
+In this example, we'll append the `banner` to the `main.js` file, so we need to implement the `process_assets` hook.
 
-To tap the `process_assets` hook, we need to declare a function and annotate it with `#[plugin_hook]` which is provided by `rspack_hook`. And the `process_assets` is a compilation hook. That means we need to import the hook `CompilationProcessAssets` from `rspack_core`. Set stage to [`Compilation::PROCESS_ASSETS_STAGE_ADDITIONS`](https://rspack.rs/api/plugin-api/compilation-hooks#process-assets-stages) and tracing to `false` to avoid recording the [tracing](https://rspack.rs/contribute/development/tracing#tracing) information as we don't need it in this example.
+To tap the `process_assets` hook, declare a function and annotate it with `#[plugin_hook]` from `rspack_hook`. Since `process_assets` is a compilation hook, import `CompilationProcessAssets` from `rspack_core`. Set the stage to [`Compilation::PROCESS_ASSETS_STAGE_ADDITIONS`](https://rspack.rs/api/plugin-api/compilation-hooks#process-assets-stages) and tracing to `false` to avoid recording [tracing](https://rspack.rs/contribute/development/tracing#tracing) information since we don't need it.
 
 ```rust,ignore
 #[plugin_hook(CompilationProcessAssets for MyBannerPlugin, stage = Compilation::PROCESS_ASSETS_STAGE_ADDITIONS, tracing = false)]
@@ -128,21 +128,21 @@ impl Plugin for MyBannerPlugin {
 }
 ```
 
-### 2.4 Conclusion
+### 2.3 Conclusion
 
-In this section, we have learned how to create a plugin in Rust and how to tap the `process_assets` hook. You can find the full code in the [rspack-binding-template](https://github.com/rspack-contrib/rspack-binding-template/blob/main/crates/binding/src/plugin.rs) repository.
+You've learned how to create a plugin in Rust and tap the `process_assets` hook. Find the full code in the [rspack-binding-template](https://github.com/rspack-contrib/rspack-binding-template/blob/main/crates/binding/src/plugin.rs) repository.
 
-In the next section, we will learn how to expose the plugin to JavaScript.
+Next, you'll learn how to expose the plugin to JavaScript.
 
 ## 3. NAPI Bindings
 
-In this section, we will learn how to expose the plugin to JavaScript using NAPI bindings. And then we will create a JavaScript wrapper for the plugin. Also reuse the `@rspack/core` package to create a new core package to replace the original `@rspack/core` package.
+This section covers exposing the plugin to JavaScript using NAPI bindings, creating a JavaScript wrapper for the plugin, and reusing the `@rspack/core` package to create a new core package replacing the original `@rspack/core` package.
 
-### 3.1 Expose the plugin to JavaScript
+### 3.1 Expose the Plugin to JavaScript
 
-To expose the plugin to JavaScript, we need to create a NAPI binding.
+To expose the plugin to JavaScript, create a NAPI binding.
 
-Now it's time to unveil the mystery of the `crates/binding/src/lib.rs` file.
+Let's examine the `crates/binding/src/lib.rs` file.
 
 Add these dependencies to your `Cargo.toml`:
 
@@ -164,7 +164,7 @@ Import required crates and use the `register_plugin` macro to expose the plugin:
 
 The `register_plugin` macro takes a plugin name (used for JavaScript identification) and a resolver function. The resolver receives [`napi::Env`](https://docs.rs/napi/latest/napi/struct.Env.html) and [`napi::Unknown`](https://docs.rs/napi/latest/napi/struct.Unknown.html) options from JavaScript, returning a `BoxPlugin` instance.
 
-As expected, when JavaScript calls `new rspack.MyBannerPlugin("// banner")`, the resolver function receives the banner string. It extracts this string using [`napi::Unknown::coerce_to_string`](https://docs.rs/napi/latest/napi/struct.Unknown.html#method.coerce_to_string) and creates a `BoxPlugin` by calling `MyBannerPlugin::new(banner)`.
+When JavaScript calls `new rspack.MyBannerPlugin("// banner")`, the resolver function receives the banner string. It extracts this string using [`napi::Unknown::coerce_to_string`](https://docs.rs/napi/latest/napi/struct.Unknown.html#method.coerce_to_string) and creates a `BoxPlugin` by calling `MyBannerPlugin::new(banner)`.
 
 > **Note:** The `Unknown` type represents any JavaScript value.
 >
@@ -199,7 +199,7 @@ register_plugin!("MyBannerPlugin", |_env: Env, options: Unknown<'_>| {
 });
 ```
 
-After the plugin is exposed to JavaScript, we can rerun `pnpm build` in `crates/binding` to build the plugin. Make sure you have `lib.crate-type = ["cdylib"]` defined in your `Cargo.toml` file.
+After exposing the plugin to JavaScript, rerun `pnpm build` in `crates/binding` to build the plugin. Ensure you have `lib.crate-type = ["cdylib"]` defined in your `Cargo.toml` file.
 
 > **Note:** The `cdylib` crate type is required for the plugin to be used in JavaScript.
 >
@@ -207,13 +207,13 @@ After the plugin is exposed to JavaScript, we can rerun `pnpm build` in `crates/
 >
 > The `NAPI-RS`cli we triggered on `pnpm build` will rename the `*.so` or `*.dll` file to `*.node` file. So that can be loaded by the NAPI runtime, which, in this case, is the Node.js.
 
-### 3.2 Create a JavaScript Plugin wrapper
+### 3.2 Create a JavaScript Plugin Wrapper
 
-Now that we have the Rust plugin implemented and exposed to JavaScript, we need to create a JavaScript wrapper for it. So that we can use the plugin in JavaScript and rspack configuration.
+With the Rust plugin implemented and exposed to JavaScript, create a JavaScript wrapper to use the plugin in JavaScript and Rspack configuration.
 
-Check out the `lib/index.js` file in the [rspack-binding-template](https://github.com/rspack-contrib/rspack-binding-template/blob/main/lib/index.js) repository.
+Check the `lib/index.js` file in the [rspack-binding-template](https://github.com/rspack-contrib/rspack-binding-template/blob/main/lib/index.js) repository.
 
-Here we will create a `MyBannerPlugin` class that is a wrapper for the Rust plugin:
+Create a `MyBannerPlugin` class that wraps the Rust plugin:
 
 ````js,ignore
 // Rewrite the `RSPACK_BINDING` environment variable to the directory of the `.node` file.
@@ -271,15 +271,15 @@ Object.defineProperty(core, 'MyBannerPlugin', {
 module.exports = core;
 ````
 
-Let's break down the code:
+Breaking down the code:
 
-**1. Rewrite the `RSPACK_BINDING` environment variable**
+**1. Rewrite the `RSPACK_BINDING` Environment Variable**
 
-The `RSPACK_BINDING` environment variable is used to tell the `@rspack/core` package where to load the binding from. The expected value is an **absolute path** of the directory of the binding package.
+The `RSPACK_BINDING` environment variable tells the `@rspack/core` package where to load the binding from. The expected value is an **absolute path** to the binding package directory.
 
 > **Note:** This line should be placed before the `require('@rspack/core')` line. Otherwise, the `@rspack/core` package will not be able to find the binding.
 
-In this example, we use the `require.resolve` method to get the path of the `@rspack-template/test-binding` package. This resolves to the `index.js` file in the `@rspack-template/test-binding` package. And then use the `dirname` method to get the directory of the `@rspack-template/test-binding` package.
+This example uses `require.resolve` to get the path of the `@rspack-template/test-binding` package. This resolves to the `index.js` file in the `@rspack-template/test-binding` package, then uses `dirname` to get the package directory.
 
 ```js,ignore
 process.env.RSPACK_BINDING = require('node:path').dirname(
@@ -287,13 +287,13 @@ process.env.RSPACK_BINDING = require('node:path').dirname(
 );
 ```
 
-**2. Register the plugin to the global plugin list**
+**2. Register the Plugin to the Global Plugin List**
 
-The `register_plugin` macro used in the `crates/binding/src/lib.rs` file exposes the plugin to JavaScript.
+The `register_plugin` macro in `crates/binding/src/lib.rs` exposes the plugin to JavaScript.
 
-For plugin name `MyBannerPlugin` defined in the `crates/binding/src/lib.rs` file, the `register_plugin` macro will expose a JS function named `registerMyBannerPlugin` to the JavaScript side. You have to call this function to register the plugin to the global plugin list.
+For the `MyBannerPlugin` defined in `crates/binding/src/lib.rs`, the `register_plugin` macro exposes a JS function named `registerMyBannerPlugin`. Call this function to register the plugin to the global plugin list.
 
-> **Note:** Calling `registerMyBannerPlugin` does not mean the plugin is registered to the current Rspack instance. It only means the plugin is registered to the global plugin list. You will need to use the wrapper defined in the later section to register the plugin to the current Rspack instance or use it in the rspack configuration.
+> **Note:** Calling `registerMyBannerPlugin` doesn't register the plugin to the current Rspack instance. It only registers the plugin to the global plugin list. Use the wrapper defined in the next section to register the plugin to the current Rspack instance or use it in Rspack configuration.
 
 ```js,ignore
 const binding = require('@rspack-template/test-binding');
@@ -302,13 +302,13 @@ const binding = require('@rspack-template/test-binding');
 binding.registerMyBannerPlugin();
 ```
 
-**3. Create a wrapper for the plugin**
+**3. Create a Wrapper for the Plugin**
 
-The `createNativePlugin` function is a function that creates a wrapper for the plugin. It is defined in the `@rspack/core` package.
+The `createNativePlugin` function creates a wrapper for the plugin. It's defined in the `@rspack/core` package.
 
-The first argument to `createNativePlugin` is the name of the plugin defined on the Rust side. The second argument is a resolver function.
+The first argument to `createNativePlugin` is the plugin name defined on the Rust side. The second argument is a resolver function.
 
-In this example, The name of the plugin is `"MyBannerPlugin"`, and the resolver function is called with the options passed to the `new MyBannerPlugin` constructor, which is the banner string. As we don't need to do anything with the options in this example, we just return the options.
+In this example, the plugin name is `"MyBannerPlugin"`, and the resolver function is called with options passed to the `new MyBannerPlugin` constructor (the banner string). Since we don't need to process the options, we just return them.
 
 ```js,ignore
 const core = require('@rspack/core');
@@ -321,9 +321,9 @@ const MyBannerPlugin = core.experiments.createNativePlugin(
 );
 ```
 
-**4. Export the plugin wrapper and `@rspack/core`**
+**4. Export the Plugin Wrapper and `@rspack/core`**
 
-Finally, we export the `MyBannerPlugin` wrapper and the `@rspack/core` package. This allows us to use the plugin in the rspack configuration and reuse all the other APIs in the `@rspack/core` package.
+Finally, export the `MyBannerPlugin` wrapper and the `@rspack/core` package. This allows using the plugin in Rspack configuration and reusing all other APIs in the `@rspack/core` package.
 
 ```js,ignore
 Object.defineProperty(core, 'MyBannerPlugin', {
@@ -335,15 +335,15 @@ module.exports = core;
 
 ### 3.3 Conclusion
 
-In this section, we have learned how to expose the plugin to JavaScript using NAPI bindings. And then we have created a JavaScript wrapper for the plugin. Also reuse the `@rspack/core` package to create a new core package to replace the original `@rspack/core` package.
+You've learned how to expose the plugin to JavaScript using NAPI bindings, created a JavaScript wrapper for the plugin, and reused the `@rspack/core` package to create a new core package replacing the original `@rspack/core` package.
 
-In the next section, we will learn how to use the plugin in the rspack configuration.
+Next, you'll learn how to use the plugin in Rspack configuration.
 
 ## 4. JavaScript Integration
 
-In this section, we will learn how to use the `MyBannerPlugin` in the rspack configuration.
+This section covers using the `MyBannerPlugin` in Rspack configuration.
 
-Check out the `examples/use-plugin/build.js` file in the [rspack-binding-template](https://github.com/rspack-contrib/rspack-binding-template/blob/main/examples/use-plugin/build.js) repository. We've already created the `MyBannerPlugin` wrapper in the previous section. So we can use it in the rspack configuration.
+Check the `examples/use-plugin/build.js` file in the [rspack-binding-template](https://github.com/rspack-contrib/rspack-binding-template/blob/main/examples/use-plugin/build.js) repository. With the `MyBannerPlugin` wrapper created in the previous section, you can now use it in Rspack configuration.
 
 ```js,ignore
 const path = require('node:path');
@@ -376,7 +376,7 @@ compiler.run((err, stats) => {
 
 ## 5. Testing the Plugin
 
-You can now run `node examples/use-plugin/build.js` to see the plugin in action. Check out the output in the `dist/main.js`, and you will see the banner comment added to the top of the file:
+Run `node examples/use-plugin/build.js` to see the plugin in action. Check the output in `dist/main.js` to see the banner comment added to the top of the file:
 
 ```js,ignore
 /** Generated by MyBannerPlugin in `@rspack-template/binding` */(() => { // webpackBootstrap
@@ -385,15 +385,15 @@ var __webpack_modules__ = ({
 ...
 ```
 
-This is also the same command as the [Verify Setup](./setup.md). But now you have the knowledge of what is happening behind the scene.
+This is the same command as in [Verify Setup](./setup.md), but now you understand what's happening behind the scenes.
 
-## Next Steps
+## Summary
 
-In this chapter, we have learned:
+You've learned how to:
 
-- To create a plugin in Rust and how to expose it to JavaScript using NAPI bindings.
-- To create a JavaScript wrapper for the plugin.
-- To reuse the `@rspack/core` package to create a new core package to replace the original `@rspack/core` package.
-- To use the plugin in the rspack configuration.
+- Create a plugin in Rust and expose it to JavaScript using NAPI bindings
+- Create a JavaScript wrapper for the plugin
+- Reuse the `@rspack/core` package to create a new core package replacing the original `@rspack/core` package
+- Use the plugin in Rspack configuration
 
-In the next chapter, we will learn to [release](./release.md) the plugin to npm with [Github Actions](https://docs.github.com/actions).
+Next, you'll learn to [release](./release.md) the plugin to npm with [GitHub Actions](https://docs.github.com/actions).
