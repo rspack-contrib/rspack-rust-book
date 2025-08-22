@@ -1,4 +1,4 @@
-# Create from Template
+# Create From Template
 
 To create a new repository based on the template, click the button below.
 
@@ -8,7 +8,7 @@ To create a new repository based on the template, click the button below.
 
 Or visit the [rspack-binding-template](https://github.com/rspack-contrib/rspack-binding-template) repository and click **"Use this template"**.
 
-After creating your repository, the binding will automatically start building. You can check the compilation progress in the **Actions** page of your new repository.
+After creating your repository, the binding will automatically start building. You can monitor the compilation progress on the **Actions** page of your new repository.
 
 The initial commit will trigger a comprehensive CI workflow that includes:
 
@@ -23,7 +23,7 @@ The initial commit will trigger a comprehensive CI workflow that includes:
 
 A successful run typically takes around 20 minutes and generates platform-specific binary artifacts. You can see an example of a completed workflow [here](https://github.com/h-a-n-a/my-rspack-binding/actions/runs/16494161817).
 
-> **Note:** You don't need to check 'include all branches'.
+> **Note:** You don't need to check "Include all branches" when creating from the template.
 
 ## Template Structure
 
@@ -37,8 +37,6 @@ A successful run typically takes around 20 minutes and generates platform-specif
 
 ## Next Steps
 
-In this chapter, we have learned:
+In this chapter, we learned how to create a new repository based on the template.
 
-- To create a new repository based on the template.
-
-In the next chapter, we will learn how to [setup the repository locally](../first-custom-binding/setup.md).
+In the next chapter, we will learn how to [set up the repository locally](../first-custom-binding/setup.md).

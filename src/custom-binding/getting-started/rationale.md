@@ -1,16 +1,16 @@
 # Rationale of _Rspack Custom Binding_
 
-The reason why Rspack is so fast is that it's written in Rust and so as the Rspack's internal builtin plugins and builtin loaders.
+Rspack is so fast because it's written in Rust, along with Rspack's internal built-in plugins and built-in loaders.
 
-For most of the time, We assume you've been using [Rspack JavaScript API](https://rspack.rs/api/index.html) and writing [Rspack JavaScript Plugins](https://rspack.rs/api/plugin-api). And you might probably heard there're some overheads when using JavaScript API. The rumour is true! Rspack is mostly written in Rust and providing the adapting layer with JavaScript API requires a lot of hassle of passing values back and forth between Rust and JavaScript. This creates a lot of overheads and performance issues.
+Most of the time, we assume you've been using the [Rspack JavaScript API](https://rspack.rs/api/index.html) and writing [Rspack JavaScript Plugins](https://rspack.rs/api/plugin-api). You might have heard there are some overheads when using the JavaScript API. The rumor is true! Since Rspack is mostly written in Rust, providing the adaptation layer with the JavaScript API requires significant overhead from passing values back and forth between Rust and JavaScript. This creates performance bottlenecks.
 
-But have you ever wondered if there's a way to extend Rspack's functionality by writing native Rust code and not requiring to sacrifice the performance or if you're able to use the rich Rust APIs? And the answer is yes. This is where _Rspack Custom Binding_ comes in.
+But have you ever wondered if there's a way to extend Rspack's functionality by writing native Rust code without sacrificing performance while accessing the rich Rust APIs? The answer is yes. This is where _Rspack Custom Binding_ comes in.
 
 To get started with _Rspack Custom Binding_, you need to know the surface level of how _Rspack binding_ works.
 
 ## How _Rspack Binding_ Works
 
-If you are using the `@rspack/cli` or `@rspack/core` and not knowing what a _custom binding_ is, you are using _Rspack binding_. It's a simple architecture that allows you to extend Rspack's functionality by leveraging the [Rspack JavaScript API](https://rspack.rs/api/index.html). It's just the same as how you use the [Webpack JavaScript API](https://webpack.js.org/api/) to extend Webpack.
+If you are using `@rspack/cli` or `@rspack/core` without knowing what a _custom binding_ is, you are using _Rspack binding_. It's a simple architecture that allows you to extend Rspack's functionality by leveraging the [Rspack JavaScript API](https://rspack.rs/api/index.html). This works the same way you use the [Webpack JavaScript API](https://webpack.js.org/api/) to extend Webpack.
 
 Let's take a deep dive into the architecture. It contains 3 parts:
 
@@ -34,7 +34,7 @@ flowchart TD
 
 The _N-API_ glue layer of Rspack.
 
-This layer contains a glue code that bridges the gap between _N-API_-compatible runtimes, which, most of the time, is [Node.js](https://nodejs.org) and [Rust Core crates](https://github.com/web-infra-dev/rspack/tree/main/crates).
+This layer contains glue code that bridges the gap between _N-API_-compatible runtimes (typically [Node.js](https://nodejs.org)) and [Rust Core crates](https://github.com/web-infra-dev/rspack/tree/main/crates).
 
 ### [`npm:@rspack/binding`](https://github.com/web-infra-dev/rspack/tree/main/crates/node_binding)
 
@@ -42,13 +42,13 @@ The _Node.js Addon_ of Rspack.
 
 This layer links `crate:rspack_binding_api` and compiles it into a _Node.js Addon_ (a `*.node` file) with [NAPI-RS](https://github.com/napi-rs/napi-rs). The functionalities that `npm:@rspack/core` provides are mostly exposed by the _Node.js Addon_ in `npm:@rspack/binding`.
 
-Note: Maybe you have checked out the code on [npm](https://www.npmjs.com/package/@rspack/binding?activeTab=code) and it does not contain the `*.node` file. This is because the `*.node` files are dispatched by the `@rspack/binding-*` packages (e.g. `@rspack/binding-darwin-arm64`) for different platforms. Don't worry about this at the moment. We will get into the details in the custom binding section.
+Note: If you've checked the code on [npm](https://www.npmjs.com/package/@rspack/binding?activeTab=code), you'll notice it doesn't contain the `*.node` file. This is because the `*.node` files are distributed by platform-specific `@rspack/binding-*` packages (e.g., `@rspack/binding-darwin-arm64`). Don't worry about this for now—we'll cover the details in the custom binding section.
 
 ### [`npm:@rspack/core`](https://github.com/web-infra-dev/rspack/tree/main/packages/rspack)
 
 The JavaScript API layer of Rspack.
 
-The internal of `npm:@rspack/core` is written in JavaScript. It bridges the gap between the _Node.js Addon_ in `npm:@rspack/binding` and [Rspack JavaScript API](https://rspack.rs/api/index.html).
+The internals of `npm:@rspack/core` are written in JavaScript. It bridges the gap between the _Node.js Addon_ in `npm:@rspack/binding` and the [Rspack JavaScript API](https://rspack.rs/api/index.html).
 
 `npm:@rspack/cli` is a command line tool that uses `npm:@rspack/core` to build your project.
 

@@ -12,7 +12,7 @@ Before diving into _Rspack Custom Binding_, we recommend:
 2. **Basic Rust Knowledge** - Familiarity with [Rust programming language](https://www.rust-lang.org/learn)
 3. **Node.js Experience** - Understanding of [Node.js addons](https://nodejs.org/api/addons.html) and [N-API](https://nodejs.org/api/n-api.html) concepts
 
-If you are not familiar with writing _Node.js addons_ and _N-API_ in Rust, don't worry. We will cover the basics in the guide.
+If you're not familiar with writing _Node.js addons_ and _N-API_ in Rust, don't worry. We will cover the basics in this guide.
 
 ## Next Steps
 
