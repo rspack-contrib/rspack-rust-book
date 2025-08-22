@@ -2,6 +2,8 @@
 
 Welcome to _Rspack Custom Binding_! This guide will help you get started with creating your own native _Node.js addon_ for Rspack.
 
+> **⚠️ Experimental Stage**: Rspack Custom Binding is currently in experimental stage. Rust APIs are likely to change in the future as the ecosystem evolves. JavaScript APIs follow semantic versioning (semver), but Rust crate versions do not follow semver due to the [version mapping strategy](../references/bump-rspack-version.md#version-mapping-strategy).
+
 ## Prerequisites
 
 Before diving into _Rspack Custom Binding_, we recommend:

@@ -16,3 +16,7 @@
   - [Release](./custom-binding/first-custom-binding/release.md)
 
 - [Create a Loader](./custom-binding/create-a-loader.md)
+
+- [References](./custom-binding/references/index.md)
+
+    - [Bump Rspack version](./custom-binding/references/bump-rspack-version.md)
