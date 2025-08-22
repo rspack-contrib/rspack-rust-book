@@ -1,0 +1,350 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Rationale - Rspack Rust Book</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../res/mermaid-anti-flash.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rspack Rust Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rspack-contrib/rspack-rust-book/tree/main" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/rspack-contrib/rspack-rust-book/tree/main/src/custom-binding/getting-started/rationale.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rationale-of-rspack-custom-binding"><a class="header" href="#rationale-of-rspack-custom-binding">Rationale of <em>Rspack Custom Binding</em></a></h1>
+<p>Rspack is so fast because it's written in Rust, along with Rspack's internal built-in plugins and built-in loaders.</p>
+<p>Most of the time, we assume you've been using the <a href="https://rspack.rs/api/index.html">Rspack JavaScript API</a> and writing <a href="https://rspack.rs/api/plugin-api">Rspack JavaScript Plugins</a>.</p>
+<p>You might have heard there are some overheads when using the JavaScript API. The rumor is true!</p>
+<p>Since Rspack is mostly written in Rust, providing the adaptation layer with the JavaScript API requires significant overhead. This overhead comes from:</p>
+<ul>
+<li>Passing values back and forth between Rust and JavaScript</li>
+<li>Type conversions between languages</li>
+<li>Memory allocation and deallocation</li>
+</ul>
+<p>These factors create performance bottlenecks.</p>
+<p>But have you ever wondered if there's a way to extend Rspack's functionality by writing native Rust code? A way that:</p>
+<ul>
+<li>Doesn't sacrifice performance</li>
+<li>Provides access to rich Rust APIs</li>
+<li>Avoids JavaScript-Rust overhead</li>
+</ul>
+<p>The answer is yes. This is where <em>Rspack Custom Binding</em> comes in.</p>
+<p>To get started with <em>Rspack Custom Binding</em>, you need to know the surface level of how <em>Rspack binding</em> works.</p>
+<h2 id="how-rspack-binding-works"><a class="header" href="#how-rspack-binding-works">How <em>Rspack Binding</em> Works</a></h2>
+<p>If you are using <code>@rspack/cli</code> or <code>@rspack/core</code> without knowing what a <em>custom binding</em> is, you are using <em>Rspack binding</em>.</p>
+<p>It's a simple architecture that allows you to extend Rspack's functionality by leveraging the <a href="https://rspack.rs/api/index.html">Rspack JavaScript API</a>. This works the same way you use the <a href="https://webpack.js.org/api/">Webpack JavaScript API</a> to extend Webpack.</p>
+<p>Let's take a deep dive into the architecture. It contains 3 parts:</p>
+<ul>
+<li><code>npm:@rspack/core</code>: The JavaScript API layer of Rspack. Written in JavaScript.</li>
+<li><code>npm:@rspack/binding</code>: The <em>Node.js Addon</em> of Rspack.</li>
+<li><code>crate:rspack_binding_api</code>: The <em>N-API</em> glue layer of Rspack. Written in Rust.</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    Core(&quot;npm:@rspack/core&quot;)
+    style Core stroke-width:0px,color:#FFDE59,fill:#545454
+
+    Core --&gt; Binding(&quot;npm:@rspack/binding&quot;)
+    style Binding stroke-width:0px,color:#FFDE59,fill:#545454
+
+    Binding --&gt; APIs(&quot;crate:rspack_binding_api&quot;)
+    style APIs stroke-width:0px,color:#FFDE59,fill:#545454
+</pre>
+<h3 id="craterspack_binding_api"><a class="header" href="#craterspack_binding_api"><a href="https://github.com/web-infra-dev/rspack/tree/main/crates/rspack_binding_api"><code>crate:rspack_binding_api</code></a></a></h3>
+<p>The <em>N-API</em> glue layer of Rspack.</p>
+<p>This layer contains glue code that bridges the gap between <em>N-API</em>-compatible runtimes (typically <a href="https://nodejs.org">Node.js</a>) and <a href="https://github.com/web-infra-dev/rspack/tree/main/crates">Rust Core crates</a>.</p>
+<h3 id="npmrspackbinding"><a class="header" href="#npmrspackbinding"><a href="https://github.com/web-infra-dev/rspack/tree/main/crates/node_binding"><code>npm:@rspack/binding</code></a></a></h3>
+<p>The <em>Node.js Addon</em> of Rspack.</p>
+<p>This layer performs two key functions:</p>
+<ol>
+<li>Links <code>crate:rspack_binding_api</code></li>
+<li>Compiles it into a <em>Node.js Addon</em> (a <code>*.node</code> file) with <a href="https://github.com/napi-rs/napi-rs">NAPI-RS</a></li>
+</ol>
+<p>The functionalities that <code>npm:@rspack/core</code> provides are mostly exposed by the <em>Node.js Addon</em> in <code>npm:@rspack/binding</code>.</p>
+<p><strong>Note</strong>: If you've checked the code on <a href="https://www.npmjs.com/package/@rspack/binding?activeTab=code">npm</a>, you'll notice it doesn't contain the <code>*.node</code> file.</p>
+<p>This is because the <code>*.node</code> files are distributed by platform-specific packages:</p>
+<ul>
+<li><code>@rspack/binding-darwin-arm64</code> (for macOS ARM)</li>
+<li><code>@rspack/binding-linux-x64</code> (for Linux x64)</li>
+<li>And others for different platforms</li>
+</ul>
+<p>Don't worry about this for now—we'll cover the details in the custom binding section.</p>
+<h3 id="npmrspackcore"><a class="header" href="#npmrspackcore"><a href="https://github.com/web-infra-dev/rspack/tree/main/packages/rspack"><code>npm:@rspack/core</code></a></a></h3>
+<p>The JavaScript API layer of Rspack.</p>
+<p>The internals of <code>npm:@rspack/core</code> are written in JavaScript. It bridges the gap between the <em>Node.js Addon</em> in <code>npm:@rspack/binding</code> and the <a href="https://rspack.rs/api/index.html">Rspack JavaScript API</a>.</p>
+<p><code>npm:@rspack/cli</code> is a command line tool that uses <code>npm:@rspack/core</code> to build your project.</p>
+<h2 id="how-rspack-custom-binding-works"><a class="header" href="#how-rspack-custom-binding-works">How <em>Rspack Custom Binding</em> Works</a></h2>
+<p>Let's use the diagram below to understand how a <em>custom binding</em> works. The diagram shows two states:</p>
+<ul>
+<li><strong>"<em>Before</em>"</strong>: The standard Rspack setup</li>
+<li><strong>"<em>After</em>"</strong>: The <em>custom binding</em> approach</li>
+</ul>
+<h3 id="before-state"><a class="header" href="#before-state">Before State</a></h3>
+<p>Your project uses the default <em>Rspack binding</em>. This is created solely from <code>crate:rspack_binding_api</code>, the core glue layer between Rust and Node.js.</p>
+<h3 id="after-state"><a class="header" href="#after-state">After State</a></h3>
+<p>You introduce your own native code. As the diagram shows, your <strong>User Customizations</strong> (like custom Rust plugins and loaders) are combined with the original <code>crate:rspack_binding_api</code>.</p>
+<p>This combination produces a new, personalized <strong>Custom Binding</strong> with several benefits:</p>
+<ul>
+<li>Becomes your project's new Node.js addon</li>
+<li>Allows injecting high-performance, custom logic directly into Rspack's build process</li>
+<li>Eliminates JavaScript-Rust communication overhead for your custom code</li>
+</ul>
+<h3 id="key-advantage"><a class="header" href="#key-advantage">Key Advantage</a></h3>
+<p>You can continue to use <a href="#npmrspackcore"><code>npm:@rspack/core</code></a> with your custom binding. This approach provides:</p>
+<ul>
+<li><strong>Native performance and customization</strong>: Your code runs at Rust speed</li>
+<li><strong>No API rewriting needed</strong>: Keep using the existing JavaScript API layer</li>
+<li><strong>Feature reuse</strong>: Access all features that <code>@rspack/core</code> provides</li>
+</ul>
+<p>We will cover how to integrate <code>@rspack/core</code> with a custom binding in a later section.</p>
+<pre class="mermaid">flowchart LR
+    subgraph Before [&quot;_Before_&quot;]
+        Original(&quot;crate:rspack_binding_api&quot;)
+        style Original stroke-width:0px,color:#FFDE59,fill:#545454
+    end
+
+    subgraph After [&quot;_After_&quot;]
+        Plugin(&quot;User Customizations:&lt;br&gt;- custom plugins&lt;br&gt;- custom loaders&quot;)
+        style Plugin stroke-width:0px,color:#AB7F45,fill:#FFE2B1
+
+        API(&quot;crate:rspack_binding_api&quot;)
+        style API stroke-width:0px,color:#FFDE59,fill:#545454
+
+        Plugin --&gt; CustomBinding(&quot;Custom Binding = &lt;br&gt;crate:rspack_binding_api + User Customizations&quot;)
+        API --&gt; CustomBinding
+        style CustomBinding stroke-width:0px,color:#AB7F45,fill:#FFE2B1
+    end
+
+    Before -.-&gt; After
+
+    style Before stroke-dasharray: 5 5
+    style After stroke-dasharray: 5 5
+</pre>
+<h2 id="next-steps"><a class="header" href="#next-steps">Next Steps</a></h2>
+<p>Now you have a basic understanding of how <em>Rspack Custom Binding</em> works. Let's move on to the <a href="./create-from-template.html">Create From Template</a> guide to set up your development environment.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../custom-binding/getting-started/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../custom-binding/getting-started/create-from-template.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../custom-binding/getting-started/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../custom-binding/getting-started/create-from-template.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../../res/mermaid-anti-flash.js"></script>
+        <script src="../../res/mermaid.min.js"></script>
+        <script src="../../res/mermaid-init.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

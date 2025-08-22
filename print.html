@@ -1,0 +1,1589 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Rspack Rust Book</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="res/mermaid-anti-flash.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rspack Rust Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rspack-contrib/rspack-rust-book/tree/main" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="the-rspack-rust-book"><a class="header" href="#the-rspack-rust-book">The Rspack Rust Book</a></h1>
+<img src="images/rspack-logo.svg" alt="Rspack Logo" height="300" />
+<p>Rspack is a high performance JavaScript bundler written in <a href="https://rust-lang.org/">Rust</a>. It offers strong compatibility with the <a href="https://webpack.js.org/">webpack</a> ecosystem, allowing for seamless replacement of webpack, and provides lightning fast build speeds.</p>
+<h2 id="sections"><a class="header" href="#sections">Sections</a></h2>
+<p><strong><a href="./custom-binding/getting-started/index.html">Rspack Custom Binding - Getting Started</a></strong></p>
+<p>In this section, we will learn how to create a custom binding for Rspack.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
+<p>Welcome to <em>Rspack Custom Binding</em>! This guide will help you get started with creating your own native <em>Node.js addon</em> for Rspack.</p>
+<blockquote>
+<p><strong>⚠️ Experimental Stage</strong>: Rspack Custom Binding is currently in experimental stage. Rust APIs are likely to change in the future as the ecosystem evolves. JavaScript APIs follow semantic versioning (semver), but Rust crate versions do not follow semver due to the <a href="custom-binding/getting-started/../references/bump-rspack-version.html#version-mapping-strategy">version mapping strategy</a>.</p>
+</blockquote>
+<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
+<p>Before diving into <em>Rspack Custom Binding</em>, we recommend:</p>
+<ol>
+<li><strong>Read the <a href="custom-binding/getting-started/./rationale.html">Rationale</a></strong> - Understand why you might want to use custom bindings and how they work</li>
+<li><strong>Basic Rust Knowledge</strong> - Familiarity with <a href="https://www.rust-lang.org/learn">Rust programming language</a></li>
+<li><strong>Node.js Experience</strong> - Understanding of <a href="https://nodejs.org/api/addons.html">Node.js addons</a> and <a href="https://nodejs.org/api/n-api.html">N-API</a> concepts</li>
+</ol>
+<p>If you're not familiar with writing <em>Node.js addons</em> and <em>N-API</em> in Rust, don't worry. We will cover the basics in this guide.</p>
+<h2 id="next-steps"><a class="header" href="#next-steps">Next Steps</a></h2>
+<p>Once you understand the rationale and architecture, proceed to the <a href="custom-binding/getting-started/./create-from-template.html">Create From Template</a> guide to set up your development environment.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="rationale-of-rspack-custom-binding"><a class="header" href="#rationale-of-rspack-custom-binding">Rationale of <em>Rspack Custom Binding</em></a></h1>
+<p>Rspack is so fast because it's written in Rust, along with Rspack's internal built-in plugins and built-in loaders.</p>
+<p>Most of the time, we assume you've been using the <a href="https://rspack.rs/api/index.html">Rspack JavaScript API</a> and writing <a href="https://rspack.rs/api/plugin-api">Rspack JavaScript Plugins</a>.</p>
+<p>You might have heard there are some overheads when using the JavaScript API. The rumor is true!</p>
+<p>Since Rspack is mostly written in Rust, providing the adaptation layer with the JavaScript API requires significant overhead. This overhead comes from:</p>
+<ul>
+<li>Passing values back and forth between Rust and JavaScript</li>
+<li>Type conversions between languages</li>
+<li>Memory allocation and deallocation</li>
+</ul>
+<p>These factors create performance bottlenecks.</p>
+<p>But have you ever wondered if there's a way to extend Rspack's functionality by writing native Rust code? A way that:</p>
+<ul>
+<li>Doesn't sacrifice performance</li>
+<li>Provides access to rich Rust APIs</li>
+<li>Avoids JavaScript-Rust overhead</li>
+</ul>
+<p>The answer is yes. This is where <em>Rspack Custom Binding</em> comes in.</p>
+<p>To get started with <em>Rspack Custom Binding</em>, you need to know the surface level of how <em>Rspack binding</em> works.</p>
+<h2 id="how-rspack-binding-works"><a class="header" href="#how-rspack-binding-works">How <em>Rspack Binding</em> Works</a></h2>
+<p>If you are using <code>@rspack/cli</code> or <code>@rspack/core</code> without knowing what a <em>custom binding</em> is, you are using <em>Rspack binding</em>.</p>
+<p>It's a simple architecture that allows you to extend Rspack's functionality by leveraging the <a href="https://rspack.rs/api/index.html">Rspack JavaScript API</a>. This works the same way you use the <a href="https://webpack.js.org/api/">Webpack JavaScript API</a> to extend Webpack.</p>
+<p>Let's take a deep dive into the architecture. It contains 3 parts:</p>
+<ul>
+<li><code>npm:@rspack/core</code>: The JavaScript API layer of Rspack. Written in JavaScript.</li>
+<li><code>npm:@rspack/binding</code>: The <em>Node.js Addon</em> of Rspack.</li>
+<li><code>crate:rspack_binding_api</code>: The <em>N-API</em> glue layer of Rspack. Written in Rust.</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    Core(&quot;npm:@rspack/core&quot;)
+    style Core stroke-width:0px,color:#FFDE59,fill:#545454
+
+    Core --&gt; Binding(&quot;npm:@rspack/binding&quot;)
+    style Binding stroke-width:0px,color:#FFDE59,fill:#545454
+
+    Binding --&gt; APIs(&quot;crate:rspack_binding_api&quot;)
+    style APIs stroke-width:0px,color:#FFDE59,fill:#545454
+</pre>
+<h3 id="craterspack_binding_api"><a class="header" href="#craterspack_binding_api"><a href="https://github.com/web-infra-dev/rspack/tree/main/crates/rspack_binding_api"><code>crate:rspack_binding_api</code></a></a></h3>
+<p>The <em>N-API</em> glue layer of Rspack.</p>
+<p>This layer contains glue code that bridges the gap between <em>N-API</em>-compatible runtimes (typically <a href="https://nodejs.org">Node.js</a>) and <a href="https://github.com/web-infra-dev/rspack/tree/main/crates">Rust Core crates</a>.</p>
+<h3 id="npmrspackbinding"><a class="header" href="#npmrspackbinding"><a href="https://github.com/web-infra-dev/rspack/tree/main/crates/node_binding"><code>npm:@rspack/binding</code></a></a></h3>
+<p>The <em>Node.js Addon</em> of Rspack.</p>
+<p>This layer performs two key functions:</p>
+<ol>
+<li>Links <code>crate:rspack_binding_api</code></li>
+<li>Compiles it into a <em>Node.js Addon</em> (a <code>*.node</code> file) with <a href="https://github.com/napi-rs/napi-rs">NAPI-RS</a></li>
+</ol>
+<p>The functionalities that <code>npm:@rspack/core</code> provides are mostly exposed by the <em>Node.js Addon</em> in <code>npm:@rspack/binding</code>.</p>
+<p><strong>Note</strong>: If you've checked the code on <a href="https://www.npmjs.com/package/@rspack/binding?activeTab=code">npm</a>, you'll notice it doesn't contain the <code>*.node</code> file.</p>
+<p>This is because the <code>*.node</code> files are distributed by platform-specific packages:</p>
+<ul>
+<li><code>@rspack/binding-darwin-arm64</code> (for macOS ARM)</li>
+<li><code>@rspack/binding-linux-x64</code> (for Linux x64)</li>
+<li>And others for different platforms</li>
+</ul>
+<p>Don't worry about this for now—we'll cover the details in the custom binding section.</p>
+<h3 id="npmrspackcore"><a class="header" href="#npmrspackcore"><a href="https://github.com/web-infra-dev/rspack/tree/main/packages/rspack"><code>npm:@rspack/core</code></a></a></h3>
+<p>The JavaScript API layer of Rspack.</p>
+<p>The internals of <code>npm:@rspack/core</code> are written in JavaScript. It bridges the gap between the <em>Node.js Addon</em> in <code>npm:@rspack/binding</code> and the <a href="https://rspack.rs/api/index.html">Rspack JavaScript API</a>.</p>
+<p><code>npm:@rspack/cli</code> is a command line tool that uses <code>npm:@rspack/core</code> to build your project.</p>
+<h2 id="how-rspack-custom-binding-works"><a class="header" href="#how-rspack-custom-binding-works">How <em>Rspack Custom Binding</em> Works</a></h2>
+<p>Let's use the diagram below to understand how a <em>custom binding</em> works. The diagram shows two states:</p>
+<ul>
+<li><strong>"<em>Before</em>"</strong>: The standard Rspack setup</li>
+<li><strong>"<em>After</em>"</strong>: The <em>custom binding</em> approach</li>
+</ul>
+<h3 id="before-state"><a class="header" href="#before-state">Before State</a></h3>
+<p>Your project uses the default <em>Rspack binding</em>. This is created solely from <code>crate:rspack_binding_api</code>, the core glue layer between Rust and Node.js.</p>
+<h3 id="after-state"><a class="header" href="#after-state">After State</a></h3>
+<p>You introduce your own native code. As the diagram shows, your <strong>User Customizations</strong> (like custom Rust plugins and loaders) are combined with the original <code>crate:rspack_binding_api</code>.</p>
+<p>This combination produces a new, personalized <strong>Custom Binding</strong> with several benefits:</p>
+<ul>
+<li>Becomes your project's new Node.js addon</li>
+<li>Allows injecting high-performance, custom logic directly into Rspack's build process</li>
+<li>Eliminates JavaScript-Rust communication overhead for your custom code</li>
+</ul>
+<h3 id="key-advantage"><a class="header" href="#key-advantage">Key Advantage</a></h3>
+<p>You can continue to use <a href="custom-binding/getting-started/rationale.html#npmrspackcore"><code>npm:@rspack/core</code></a> with your custom binding. This approach provides:</p>
+<ul>
+<li><strong>Native performance and customization</strong>: Your code runs at Rust speed</li>
+<li><strong>No API rewriting needed</strong>: Keep using the existing JavaScript API layer</li>
+<li><strong>Feature reuse</strong>: Access all features that <code>@rspack/core</code> provides</li>
+</ul>
+<p>We will cover how to integrate <code>@rspack/core</code> with a custom binding in a later section.</p>
+<pre class="mermaid">flowchart LR
+    subgraph Before [&quot;_Before_&quot;]
+        Original(&quot;crate:rspack_binding_api&quot;)
+        style Original stroke-width:0px,color:#FFDE59,fill:#545454
+    end
+
+    subgraph After [&quot;_After_&quot;]
+        Plugin(&quot;User Customizations:&lt;br&gt;- custom plugins&lt;br&gt;- custom loaders&quot;)
+        style Plugin stroke-width:0px,color:#AB7F45,fill:#FFE2B1
+
+        API(&quot;crate:rspack_binding_api&quot;)
+        style API stroke-width:0px,color:#FFDE59,fill:#545454
+
+        Plugin --&gt; CustomBinding(&quot;Custom Binding = &lt;br&gt;crate:rspack_binding_api + User Customizations&quot;)
+        API --&gt; CustomBinding
+        style CustomBinding stroke-width:0px,color:#AB7F45,fill:#FFE2B1
+    end
+
+    Before -.-&gt; After
+
+    style Before stroke-dasharray: 5 5
+    style After stroke-dasharray: 5 5
+</pre>
+<h2 id="next-steps-1"><a class="header" href="#next-steps-1">Next Steps</a></h2>
+<p>Now you have a basic understanding of how <em>Rspack Custom Binding</em> works. Let's move on to the <a href="custom-binding/getting-started/./create-from-template.html">Create From Template</a> guide to set up your development environment.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="create-from-template"><a class="header" href="#create-from-template">Create From Template</a></h1>
+<h2 id="creating-your-repository"><a class="header" href="#creating-your-repository">Creating Your Repository</a></h2>
+<p>Click the button below to create a new repository from the template:</p>
+<a href="https://github.com/new?template_name=rspack-binding-template&template_owner=rspack-contrib">
+  <img src="custom-binding/getting-started/../../images/deploy-from-template.svg" alt="Deploy from Template" />
+</a>
+<p>Alternatively, visit the <a href="https://github.com/rspack-contrib/rspack-binding-template">rspack-binding-template</a> repository and click <strong>"Use this template"</strong>.</p>
+<h2 id="automatic-build"><a class="header" href="#automatic-build">Automatic Build</a></h2>
+<p>After creating your repository, the binding will automatically start building. Monitor the progress on the <strong>Actions</strong> page of your repository.</p>
+<h3 id="ci-workflow"><a class="header" href="#ci-workflow">CI Workflow</a></h3>
+<p>The initial commit triggers a comprehensive workflow:</p>
+<ul>
+<li><strong>Cargo Check</strong> - Rust code validation</li>
+<li><strong>Cargo Clippy</strong> - Linting and best practices</li>
+<li><strong>Build</strong> - Cross-platform compilation for:
+<ul>
+<li>macOS (x86_64 and ARM64)</li>
+<li>Windows (x86_64, i686, and ARM64)</li>
+<li>Linux (x86_64 GNU/musl, ARM64 GNU/musl, ARMv7)</li>
+<li>Android (ARM64 and ARMv7)</li>
+</ul>
+</li>
+<li><strong>Test</strong> - Running tests on Ubuntu, macOS, and Windows</li>
+</ul>
+<p>A successful run takes ~20 minutes and generates platform-specific binary artifacts. See an <a href="https://github.com/h-a-n-a/my-rspack-binding/actions/runs/16494161817">example workflow</a>.</p>
+<blockquote>
+<p><strong>Note</strong>: You don't need to check "Include all branches" when creating from the template.</p>
+</blockquote>
+<h2 id="what-you-get"><a class="header" href="#what-you-get">What You Get</a></h2>
+<p>The template provides two key packages that extend Rspack:</p>
+<ul>
+<li><strong>New Core Package</strong> - Extends <code>@rspack/core</code> with your custom functionality</li>
+<li><strong>New Binding</strong> - Extends <code>@rspack/binding</code> (the transitive dependency that <code>@rspack/core</code> uses) with your Rust code</li>
+</ul>
+<p>These become drop-in replacements for the standard Rspack packages in your projects.</p>
+<h2 id="template-structure"><a class="header" href="#template-structure">Template Structure</a></h2>
+<p>The template includes these key components:</p>
+<ul>
+<li><strong><code>crates/binding/</code></strong> - Your Rust code that extends Rspack's functionality</li>
+<li><strong><code>examples/</code></strong> - Ready-to-run examples showing how to use your custom binding
+<ul>
+<li><strong><code>use-plugin/</code></strong> - Demonstrates custom Rust plugin usage</li>
+<li><strong><code>use-loader/</code></strong> - Demonstrates custom Rust loader usage</li>
+</ul>
+</li>
+<li><strong><code>lib/</code></strong> - JavaScript wrapper that becomes your new <code>@rspack/core</code> package</li>
+<li><strong>Configuration files</strong> - Essential setup for building and publishing:
+<ul>
+<li><strong><code>Cargo.toml</code></strong>, <strong><code>package.json</code></strong> - Package definitions</li>
+<li><strong><code>rust-toolchain.toml</code></strong>, <strong><code>rustfmt.toml</code></strong> - Consistent Rust environment</li>
+<li><strong><code>pnpm-workspace.yaml</code></strong> - Monorepo workspace management</li>
+</ul>
+</li>
+<li><strong>Automation</strong> - Pre-configured tooling:
+<ul>
+<li><strong><code>.github/</code></strong> - CI/CD workflows for cross-platform builds</li>
+<li><strong><code>.cargo/</code></strong> - Rust build configuration</li>
+<li><strong><code>.husky/</code></strong> - Git hooks for code quality</li>
+</ul>
+</li>
+</ul>
+<p><strong>Tech Stack:</strong> Rust, JavaScript/TypeScript, Node.js, Cargo, pnpm, GitHub Actions</p>
+<h2 id="next-steps-2"><a class="header" href="#next-steps-2">Next Steps</a></h2>
+<p>In this chapter, we learned how to create a new repository based on the template.</p>
+<p>In the next chapter, we will learn how to <a href="custom-binding/getting-started/../first-custom-binding/setup.html">set up the repository locally</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="first-custom-binding"><a class="header" href="#first-custom-binding">First Custom Binding</a></h1>
+<p>This chapter will guide you through creating your first custom Rspack binding, from initial setup to publishing on npm.</p>
+<p>You'll learn to build a complete <code>MyBannerPlugin</code> that adds custom banners to generated JavaScript files, demonstrating the full workflow from Rust implementation to JavaScript integration.</p>
+<h2 id="what-youll-build"><a class="header" href="#what-youll-build">What You'll Build</a></h2>
+<p>By the end of this chapter, you'll have:</p>
+<ul>
+<li>A working Rust plugin that integrates with Rspack's compilation process</li>
+<li>NAPI bindings that expose your Rust code to JavaScript</li>
+<li>A complete npm package ready for distribution</li>
+<li>Understanding of the Rspack plugin architecture</li>
+</ul>
+<h2 id="prerequisites-1"><a class="header" href="#prerequisites-1">Prerequisites</a></h2>
+<ul>
+<li><a href="custom-binding/first-custom-binding/../getting-started/create-from-template.html">Create From Template</a></li>
+</ul>
+<h2 id="chapter-overview"><a class="header" href="#chapter-overview">Chapter Overview</a></h2>
+<ol>
+<li><strong><a href="custom-binding/first-custom-binding/./setup.html">Setup</a></strong> - Configure your development environment</li>
+<li><strong><a href="custom-binding/first-custom-binding/./create-plugin.html">Create a Plugin</a></strong> - Build the MyBannerPlugin from scratch</li>
+<li><strong><a href="custom-binding/first-custom-binding/./release.html">Release</a></strong> - Publish your plugin to npm with GitHub Actions</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="setup"><a class="header" href="#setup">Setup</a></h1>
+<p>This section guides you through setting up your newly created rspack-binding repository for local development.</p>
+<h2 id="prerequisites-2"><a class="header" href="#prerequisites-2">Prerequisites</a></h2>
+<p>Ensure you have the following installed:</p>
+<ul>
+<li><strong>Node.js</strong> (&gt;= 18.0.0)</li>
+<li><strong>Rust</strong> (latest stable version)</li>
+</ul>
+<p>This repository uses <a href="https://github.com/nodejs/corepack">Corepack</a> to manage package managers, eliminating the need to install pnpm manually.</p>
+<blockquote>
+<p><strong>Note:</strong> According to the <a href="https://github.com/nodejs/corepack?tab=readme-ov-file#manual-installs">official documentation</a>: "Corepack is distributed with Node.js from version 14.19.0 up to (but not including) 25.0.0. Run <code>corepack enable</code> to install the required Yarn and pnpm binaries on your path."</p>
+<p>If you're using Node.js 25+ or an older version, you may need to install Corepack manually following the <a href="https://github.com/nodejs/corepack?tab=readme-ov-file#manual-installs">installation guide</a>.</p>
+</blockquote>
+<h2 id="installation-steps"><a class="header" href="#installation-steps">Installation Steps</a></h2>
+<h3 id="1-clone-your-repository"><a class="header" href="#1-clone-your-repository">1. Clone your repository</a></h3>
+<pre><code class="language-bash">git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+</code></pre>
+<h3 id="2-enable-corepack"><a class="header" href="#2-enable-corepack">2. Enable Corepack</a></h3>
+<pre><code class="language-bash">corepack enable
+</code></pre>
+<h3 id="3-install-dependencies"><a class="header" href="#3-install-dependencies">3. Install dependencies</a></h3>
+<pre><code class="language-bash">pnpm install
+</code></pre>
+<p>This command reads the <code>pnpm-workspace.yaml</code> configuration and installs dependencies for all workspace projects, including <code>@rspack-template/binding</code> and <code>@rspack-template/core</code>.</p>
+<blockquote>
+<p><strong>Note:</strong> The package names <code>@rspack-template/binding</code> and <code>@rspack-template/core</code> are demo names used to make the template runnable. Their functionalities correspond to <code>@rspack/binding</code> and <code>@rspack/core</code> respectively. You can manually replace these package names with your own.</p>
+<p>We recommend using npm scope for your package names. As mentioned in the <a href="https://napi.rs/docs/introduction/getting-started#deep-dive">NAPI-RS documentation</a>: "It is recommended to distribute your package under npm scope because <code>@napi-rs/cli</code> will, by default, append different platform suffixes to the npm package name for different platform binary distributions. Using npm scope will help reduce the chance that the package name was already taken."</p>
+</blockquote>
+<p>You should see output similar to this:</p>
+<pre><code class="language-text">❯ pnpm install
+Scope: all 3 workspace projects
+Lockfile is up to date, resolution step is skipped
+Packages: +126
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 126, reused 123, downloaded 3, added 126, done
+
+dependencies:
++ @rspack-template/binding 0.0.2 &lt;- crates/binding
++ @rspack/core 1.4.10
+
+devDependencies:
++ @taplo/cli 0.7.0
++ husky 9.1.7
++ lint-staged 16.1.2
+
+. prepare$ husky
+└─ Done in 97ms
+Downloading @rspack/binding-darwin-arm64@1.4.10: 17.67 MB/17.67 MB, done
+Done in 4.1s using pnpm v10.13.1
+</code></pre>
+<blockquote>
+<p><strong>For the following tutorials:</strong> We use <code>@rspack-template/test-binding</code> and <code>@rspack-template/test-core</code> as example package names. We'll perform a global replacement of these package names and reinstall dependencies to demonstrate the complete development workflow. See <a href="https://github.com/h-a-n-a/my-rspack-binding/commit/2ce89d6d3a1e08019458214a7bb1f3eb1720d82b">this commit</a> for reference.</p>
+</blockquote>
+<h3 id="4-build-the-project"><a class="header" href="#4-build-the-project">4. Build the project</a></h3>
+<pre><code class="language-bash">pnpm build
+</code></pre>
+<p>This command triggers <a href="https://napi.rs/">NAPI-RS</a> compilation to build the Rust binding. NAPI-RS is a framework for building pre-compiled Node.js addons in Rust, providing a safe and efficient way to call Rust code from JavaScript.</p>
+<p>You should see output similar to this:</p>
+<pre><code class="language-text">❯ pnpm build
+
+&gt; @rspack-template/test-core@0.0.2 build /my-rspack-binding
+&gt; pnpm run --filter @rspack-template/test-binding build
+
+
+&gt; @rspack-template/test-binding@0.0.2 build /my-rspack-binding/crates/binding
+&gt; napi build --platform
+
+   Compiling proc-macro2 v1.0.95
+   Compiling unicode-ident v1.0.18
+   Compiling serde v1.0.219
+   Compiling libc v0.2.174
+   Compiling version_check v0.9.5
+   Compiling crossbeam-utils v0.8.21
+   Compiling rayon-core v1.12.1
+   Compiling autocfg v1.5.0
+   Compiling zerocopy v0.8.26
+   Compiling getrandom v0.3.3
+   Compiling object v0.36.7
+   Compiling parking_lot_core v0.9.11
+   Compiling anyhow v1.0.98
+   ...
+   Compiling rspack_plugin_hmr v0.4.10
+   Compiling rspack_plugin_css_chunking v0.4.10
+   Compiling rspack_plugin_module_info_header v0.4.10
+   Compiling rspack_plugin_sri v0.4.10
+   Compiling rspack_binding_builder v0.4.10
+   Compiling rspack_binding_builder_macros v0.4.10
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3m 29s
+</code></pre>
+<p>The build process compiles the Rust code in <code>crates/binding</code> into a native Node.js addon (<code>.node</code> file) that can be called from JavaScript.</p>
+<h2 id="verify-setup"><a class="header" href="#verify-setup">Verify Setup</a></h2>
+<p>To verify that everything is working correctly, run the example plugin:</p>
+<pre><code class="language-bash">node examples/use-plugin/build.js
+</code></pre>
+<p>This executes the example plugin using your compiled binding, demonstrating that the Rust-JavaScript integration works properly.</p>
+<p>If the example runs successfully, your setup is complete and ready for development:</p>
+<pre><code class="language-text">❯ node examples/use-plugin/build.js
+assets by status 1.46 KiB [cached] 1 asset
+runtime modules 93 bytes 2 modules
+./src/index.js 1 bytes [built] [code generated]
+Rspack 1.4.10 compiled successfully in 30 ms
+</code></pre>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<p>You've successfully:</p>
+<ul>
+<li>Set up the repository locally</li>
+<li>Built the project using NAPI-RS</li>
+<li>Verified the setup with the example plugin</li>
+</ul>
+<p>Next, you'll learn to create the <a href="custom-binding/first-custom-binding/./create-plugin.html"><code>MyBannerPlugin</code></a> as a practical example demonstrating how to build custom Rspack bindings. This plugin shows the complete workflow from Rust implementation to JavaScript integration.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="create-a-plugin"><a class="header" href="#create-a-plugin">Create a Plugin</a></h1>
+<p>This chapter explores the <code>MyBannerPlugin</code> that's already created in the template as a practical example. While the plugin is already implemented, we'll walk you through creating this plugin from scratch and using it in JavaScript. This demonstrates the complete workflow from Rust implementation to JavaScript integration.</p>
+<h2 id="what-is-mybannerplugin"><a class="header" href="#what-is-mybannerplugin">What is <code>MyBannerPlugin</code>?</a></h2>
+<p><code>MyBannerPlugin</code> is a simple plugin that adds a banner comment to the top of generated JavaScript files.</p>
+<h2 id="prerequisites-3"><a class="header" href="#prerequisites-3">Prerequisites</a></h2>
+<p>Before starting this tutorial, make sure you have completed the <a href="custom-binding/first-custom-binding/./setup.html">setup process</a> and can successfully run the example plugin.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>We'll guide you through the plugin creation process in these steps:</p>
+<ol>
+<li><strong>Understand the Plugin Structure</strong> - Examine the basic Rust plugin structure</li>
+<li><strong>Learn the Plugin Logic</strong> - Understand how the banner functionality works</li>
+<li><strong>NAPI Bindings</strong> - See how Rust functionality is exposed to JavaScript using NAPI-RS</li>
+<li><strong>JavaScript Integration</strong> - Learn how to use the plugin in JavaScript and rspack configuration</li>
+<li><strong>Testing the Plugin</strong> - Learn how to verify the plugin works correctly</li>
+</ol>
+<p>Let's explore the <code>MyBannerPlugin</code> implementation.</p>
+<h2 id="1-understand-the-plugin-structure"><a class="header" href="#1-understand-the-plugin-structure">1. Understand the Plugin Structure</a></h2>
+<p>The <code>MyBannerPlugin</code> is implemented in Rust and follows the standard plugin structure.</p>
+<ul>
+<li><code>crates/binding/src/lib.rs</code> - The glue code that exports the plugin to JavaScript</li>
+<li><code>crates/binding/src/plugin.rs</code> - The <code>MyBannerPlugin</code> implementation</li>
+</ul>
+<h2 id="2-learn-the-plugin-logic"><a class="header" href="#2-learn-the-plugin-logic">2. Learn the Plugin Logic</a></h2>
+<p><code>MyBannerPlugin</code> adds a banner comment to the top of the generated <code>main.js</code> file.</p>
+<p>Before we start, be sure to add the following dependencies to your <code>Cargo.toml</code> file:</p>
+<ul>
+<li><code>rspack_core</code> - The Rspack core API</li>
+<li><code>rspack_error</code> - The Rspack error handling API</li>
+<li><code>rspack_hook</code> - The Rspack hook API</li>
+<li><code>rspack_sources</code> - The Rspack source API, which is a port of webpack's <a href="https://github.com/webpack/webpack-sources"><code>webpack-sources</code></a></li>
+</ul>
+<h3 id="21-initialize-the-plugin"><a class="header" href="#21-initialize-the-plugin">2.1 Initialize the Plugin</a></h3>
+<p><code>MyBannerPlugin</code> is implemented as a struct with a <code>banner</code> field containing the banner comment. The <code>new</code> method is a constructor that takes a <code>String</code> and returns a <code>MyBannerPlugin</code> instance.</p>
+<p>The <code>MyBannerPlugin</code> struct is annotated with <code>#[plugin]</code> to indicate it's a plugin. The <code>#[plugin]</code> macro is provided by the <code>rspack_hook</code> crate.</p>
+<p>It also implements the <code>Plugin</code> trait from the <code>rspack_core</code> crate. The <code>Plugin</code> trait is core for all plugins, requiring the <code>name</code> method to return the plugin name and the <code>apply</code> method to apply the plugin to compilation, matching the <code>apply</code> method in the <a href="https://rspack.rs/api/plugin-api">Rspack JavaScript Plugin API</a>.</p>
+<p>In this example, the <code>name</code> method returns <code>"MyBannerPlugin"</code>, and the <code>apply</code> method is currently to be implemented.</p>
+<pre><code class="language-rust ignore">/// A plugin that adds a banner to the output `main.js`.
+#[derive(Debug)]
+#[plugin]
+pub struct MyBannerPlugin {
+  banner: String,
+}
+
+impl MyBannerPlugin {
+  pub fn new(banner: String) -&gt; Self {
+    Self::new_inner(banner)
+  }
+}
+
+impl Plugin for MyBannerPlugin {
+  fn name(&amp;self) -&gt; &amp;'static str {
+    "MyBannerPlugin"
+  }
+
+  fn apply(
+    &amp;self,
+    ctx: PluginContext&lt;&amp;mut ApplyContext&gt;,
+    _options: &amp;CompilerOptions,
+  ) -&gt; rspack_error::Result&lt;()&gt; {
+    Ok(())
+  }
+}</code></pre>
+<h3 id="22-implement-with-rust-hooks"><a class="header" href="#22-implement-with-rust-hooks">2.2 Implement with Rust Hooks</a></h3>
+<p>Like hooks in the <a href="https://rspack.rs/api/plugin-api">Rspack JavaScript Plugin API</a>, Rust hooks are implemented as functions that take a reference to the plugin instance and a reference to certain categories.</p>
+<p>The <code>apply</code> method is called with <code>PluginContext</code> and <code>CompilerOptions</code> instances.</p>
+<p>In this example, we'll append the <code>banner</code> to the <code>main.js</code> file, so we need to implement the <code>process_assets</code> hook.</p>
+<p>To tap the <code>process_assets</code> hook, declare a function and annotate it with <code>#[plugin_hook]</code> from <code>rspack_hook</code>. Since <code>process_assets</code> is a compilation hook, import <code>CompilationProcessAssets</code> from <code>rspack_core</code>. Set the stage to <a href="https://rspack.rs/api/plugin-api/compilation-hooks#process-assets-stages"><code>Compilation::PROCESS_ASSETS_STAGE_ADDITIONS</code></a> and tracing to <code>false</code> to avoid recording <a href="https://rspack.rs/contribute/development/tracing#tracing">tracing</a> information since we don't need it.</p>
+<pre><code class="language-rust ignore">#[plugin_hook(CompilationProcessAssets for MyBannerPlugin, stage = Compilation::PROCESS_ASSETS_STAGE_ADDITIONS, tracing = false)]
+async fn process_assets(&amp;self, compilation: &amp;mut Compilation) -&gt; Result&lt;()&gt; {
+  let asset = compilation.assets_mut().get_mut("main.js");
+  if let Some(asset) = asset {
+    let original_source = asset.get_source().cloned();
+    asset.set_source(Some(Arc::new(ConcatSource::new([
+      RawSource::from(self.banner.as_str()).boxed(),
+      original_source.unwrap().boxed(),
+    ]))));
+  }
+
+  Ok(())
+}</code></pre>
+<h3 id="23-tap-the-hook"><a class="header" href="#23-tap-the-hook">2.3 Tap the hook</a></h3>
+<pre><code class="language-rust ignore">impl Plugin for MyBannerPlugin {
+  fn name(&amp;self) -&gt; &amp;'static str {
+    "MyBannerPlugin"
+  }
+
+  fn apply(
+    &amp;self,
+    ctx: PluginContext&lt;&amp;mut ApplyContext&gt;,
+    _options: &amp;CompilerOptions,
+  ) -&gt; rspack_error::Result&lt;()&gt; {
+    ctx
+      .context
+      .compilation_hooks
+      .process_assets
+      .tap(process_assets::new(self));
+    Ok(())
+  }
+}</code></pre>
+<h3 id="23-conclusion"><a class="header" href="#23-conclusion">2.3 Conclusion</a></h3>
+<p>You've learned how to create a plugin in Rust and tap the <code>process_assets</code> hook. Find the full code in the <a href="https://github.com/rspack-contrib/rspack-binding-template/blob/main/crates/binding/src/plugin.rs">rspack-binding-template</a> repository.</p>
+<p>Next, you'll learn how to expose the plugin to JavaScript.</p>
+<h2 id="3-napi-bindings"><a class="header" href="#3-napi-bindings">3. NAPI Bindings</a></h2>
+<p>This section covers exposing the plugin to JavaScript using NAPI bindings, creating a JavaScript wrapper for the plugin, and reusing the <code>@rspack/core</code> package to create a new core package replacing the original <code>@rspack/core</code> package.</p>
+<h3 id="31-expose-the-plugin-to-javascript"><a class="header" href="#31-expose-the-plugin-to-javascript">3.1 Expose the Plugin to JavaScript</a></h3>
+<p>To expose the plugin to JavaScript, create a NAPI binding.</p>
+<p>Let's examine the <code>crates/binding/src/lib.rs</code> file.</p>
+<p>Add these dependencies to your <code>Cargo.toml</code>:</p>
+<ul>
+<li><code>rspack_binding_builder</code> - Rspack binding builder API</li>
+<li><code>rspack_binding_builder_macros</code> - Rspack binding builder macros</li>
+<li><a href="https://docs.rs/napi/latest/napi/"><code>napi</code></a> - NAPI-RS crate</li>
+<li><a href="https://docs.rs/napi_derive/latest/napi_derive/"><code>napi_derive</code></a> - NAPI-RS derive macro</li>
+</ul>
+<p>The <code>crates/binding/src/lib.rs</code> file exports the plugin to JavaScript using NAPI bindings.</p>
+<blockquote>
+<p><strong>Note:</strong> Split plugin implementation across files: <code>plugin.rs</code> for logic, <code>lib.rs</code> for JavaScript bindings.</p>
+</blockquote>
+<p>Import required crates and use the <code>register_plugin</code> macro to expose the plugin:</p>
+<ol>
+<li>Import <code>napi::bindgen_prelude::*</code> (required by <code>register_plugin</code> macro)</li>
+<li>Import <code>register_plugin</code> from <code>rspack_binding_builder_macros</code></li>
+<li>Import <code>napi_derive</code> with <code>#[macro_use]</code> attribute</li>
+<li>Use <code>register_plugin</code> with a plugin name and resolver function</li>
+</ol>
+<p>The <code>register_plugin</code> macro takes a plugin name (used for JavaScript identification) and a resolver function. The resolver receives <a href="https://docs.rs/napi/latest/napi/struct.Env.html"><code>napi::Env</code></a> and <a href="https://docs.rs/napi/latest/napi/struct.Unknown.html"><code>napi::Unknown</code></a> options from JavaScript, returning a <code>BoxPlugin</code> instance.</p>
+<p>When JavaScript calls <code>new rspack.MyBannerPlugin("// banner")</code>, the resolver function receives the banner string. It extracts this string using <a href="https://docs.rs/napi/latest/napi/struct.Unknown.html#method.coerce_to_string"><code>napi::Unknown::coerce_to_string</code></a> and creates a <code>BoxPlugin</code> by calling <code>MyBannerPlugin::new(banner)</code>.</p>
+<blockquote>
+<p><strong>Note:</strong> The <code>Unknown</code> type represents any JavaScript value.</p>
+<p>In this example, we use the <code>coerce_to_string</code> method to get the banner string. The <code>coerce_to_string</code> method returns a <code>Result</code> - it will succeed for <a href="https://nodejs.org/api/n-api.html#napi_coerce_to_string">string-convertible values</a> but error if the value cannot be converted to a string. Additional type validation can be added as needed.</p>
+</blockquote>
+<pre><code class="language-rust ignore">mod plugin;
+
+use napi::bindgen_prelude::*;
+use rspack_binding_builder_macros::register_plugin;
+use rspack_core::BoxPlugin;
+
+#[macro_use]
+extern crate napi_derive;
+extern crate rspack_binding_builder;
+
+// Export a plugin named `MyBannerPlugin`.
+//
+// `register_plugin` is a macro that registers a plugin.
+//
+// The first argument to `register_plugin` is the name of the plugin.
+// The second argument to `register_plugin` is a resolver function that is called with `napi::Env` and the options returned from the resolver function from JS side.
+//
+// The resolver function should return a `BoxPlugin` instance.
+register_plugin!("MyBannerPlugin", |_env: Env, options: Unknown&lt;'_&gt;| {
+  let banner = options
+    .coerce_to_string()?
+    .into_utf8()?
+    .as_str()?
+    .to_string();
+  Ok(Box::new(plugin::MyBannerPlugin::new(banner)) as BoxPlugin)
+});</code></pre>
+<p>After exposing the plugin to JavaScript, rerun <code>pnpm build</code> in <code>crates/binding</code> to build the plugin. Ensure you have <code>lib.crate-type = ["cdylib"]</code> defined in your <code>Cargo.toml</code> file.</p>
+<blockquote>
+<p><strong>Note:</strong> The <code>cdylib</code> crate type is required for the plugin to be used in JavaScript.</p>
+<p>This makes this crate a dynamic library, on Linux, it will be a <code>*.so</code> file and on Windows, it will be a <code>*.dll</code> file.</p>
+<p>The <code>NAPI-RS</code>cli we triggered on <code>pnpm build</code> will rename the <code>*.so</code> or <code>*.dll</code> file to <code>*.node</code> file. So that can be loaded by the NAPI runtime, which, in this case, is the Node.js.</p>
+</blockquote>
+<h3 id="32-create-a-javascript-plugin-wrapper"><a class="header" href="#32-create-a-javascript-plugin-wrapper">3.2 Create a JavaScript Plugin Wrapper</a></h3>
+<p>With the Rust plugin implemented and exposed to JavaScript, create a JavaScript wrapper to use the plugin in JavaScript and Rspack configuration.</p>
+<p>Check the <code>lib/index.js</code> file in the <a href="https://github.com/rspack-contrib/rspack-binding-template/blob/main/lib/index.js">rspack-binding-template</a> repository.</p>
+<p>Create a <code>MyBannerPlugin</code> class that wraps the Rust plugin:</p>
+<pre><code class="language-js ignore">// Rewrite the `RSPACK_BINDING` environment variable to the directory of the `.node` file.
+// So that we can reuse the `@rspack/core` package to load the right binding.
+process.env.RSPACK_BINDING = require('node:path').dirname(
+  require.resolve('@rspack-template/test-binding')
+);
+
+const binding = require('@rspack-template/test-binding');
+
+// Register the plugin `MyBannerPlugin` exported by `crates/binding/src/lib.rs`.
+binding.registerMyBannerPlugin();
+
+const core = require('@rspack/core');
+
+/**
+ * Creates a wrapper for the plugin `MyBannerPlugin` exported by `crates/binding/src/lib.rs`.
+ *
+ * Check out `crates/binding/src/lib.rs` for the original plugin definition.
+ * This plugin is used in `examples/use-plugin/build.js`.
+ *
+ * @example
+ * ```js
+ * const MyBannerPlugin = require('@rspack-template/test-core').MyBannerPlugin;
+ * ```
+ *
+ * `createNativePlugin` is a function that creates a wrapper for the plugin.
+ *
+ * The first argument to `createNativePlugin` is the name of the plugin.
+ * The second argument to `createNativePlugin` is a resolver function.
+ *
+ * Options used to call `new MyBannerPlugin` will be passed as the arguments to the resolver function.
+ * The return value of the resolver function will be used to initialize the plugin in `MyBannerPlugin` on the Rust side.
+ *
+ * For the following code:
+ *
+ * ```js
+ * new MyBannerPlugin('// Hello World')
+ * ```
+ *
+ * The resolver function will be called with `'// Hello World'`.
+ *
+ */
+const MyBannerPlugin = core.experiments.createNativePlugin(
+  'MyBannerPlugin',
+  function (options) {
+    return options;
+  }
+);
+
+Object.defineProperty(core, 'MyBannerPlugin', {
+  value: MyBannerPlugin,
+});
+
+module.exports = core;
+</code></pre>
+<p>Breaking down the code:</p>
+<p><strong>1. Rewrite the <code>RSPACK_BINDING</code> Environment Variable</strong></p>
+<p>The <code>RSPACK_BINDING</code> environment variable tells the <code>@rspack/core</code> package where to load the binding from. The expected value is an <strong>absolute path</strong> to the binding package directory.</p>
+<blockquote>
+<p><strong>Note:</strong> This line should be placed before the <code>require('@rspack/core')</code> line. Otherwise, the <code>@rspack/core</code> package will not be able to find the binding.</p>
+</blockquote>
+<p>This example uses <code>require.resolve</code> to get the path of the <code>@rspack-template/test-binding</code> package. This resolves to the <code>index.js</code> file in the <code>@rspack-template/test-binding</code> package, then uses <code>dirname</code> to get the package directory.</p>
+<pre><code class="language-js ignore">process.env.RSPACK_BINDING = require('node:path').dirname(
+  require.resolve('@rspack-template/test-binding')
+);
+</code></pre>
+<p><strong>2. Register the Plugin to the Global Plugin List</strong></p>
+<p>The <code>register_plugin</code> macro in <code>crates/binding/src/lib.rs</code> exposes the plugin to JavaScript.</p>
+<p>For the <code>MyBannerPlugin</code> defined in <code>crates/binding/src/lib.rs</code>, the <code>register_plugin</code> macro exposes a JS function named <code>registerMyBannerPlugin</code>. Call this function to register the plugin to the global plugin list.</p>
+<blockquote>
+<p><strong>Note:</strong> Calling <code>registerMyBannerPlugin</code> doesn't register the plugin to the current Rspack instance. It only registers the plugin to the global plugin list. Use the wrapper defined in the next section to register the plugin to the current Rspack instance or use it in Rspack configuration.</p>
+</blockquote>
+<pre><code class="language-js ignore">const binding = require('@rspack-template/test-binding');
+
+// Register the plugin `MyBannerPlugin` exported by `crates/binding/src/lib.rs`.
+binding.registerMyBannerPlugin();
+</code></pre>
+<p><strong>3. Create a Wrapper for the Plugin</strong></p>
+<p>The <code>createNativePlugin</code> function creates a wrapper for the plugin. It's defined in the <code>@rspack/core</code> package.</p>
+<p>The first argument to <code>createNativePlugin</code> is the plugin name defined on the Rust side. The second argument is a resolver function.</p>
+<p>In this example, the plugin name is <code>"MyBannerPlugin"</code>, and the resolver function is called with options passed to the <code>new MyBannerPlugin</code> constructor (the banner string). Since we don't need to process the options, we just return them.</p>
+<pre><code class="language-js ignore">const core = require('@rspack/core');
+
+const MyBannerPlugin = core.experiments.createNativePlugin(
+  'MyBannerPlugin',
+  function (options) {
+    return options;
+  }
+);
+</code></pre>
+<p><strong>4. Export the Plugin Wrapper and <code>@rspack/core</code></strong></p>
+<p>Finally, export the <code>MyBannerPlugin</code> wrapper and the <code>@rspack/core</code> package. This allows using the plugin in Rspack configuration and reusing all other APIs in the <code>@rspack/core</code> package.</p>
+<pre><code class="language-js ignore">Object.defineProperty(core, 'MyBannerPlugin', {
+  value: MyBannerPlugin,
+});
+
+module.exports = core;
+</code></pre>
+<h3 id="33-conclusion"><a class="header" href="#33-conclusion">3.3 Conclusion</a></h3>
+<p>You've learned how to expose the plugin to JavaScript using NAPI bindings, created a JavaScript wrapper for the plugin, and reused the <code>@rspack/core</code> package to create a new core package replacing the original <code>@rspack/core</code> package.</p>
+<p>Next, you'll learn how to use the plugin in Rspack configuration.</p>
+<h2 id="4-javascript-integration"><a class="header" href="#4-javascript-integration">4. JavaScript Integration</a></h2>
+<p>This section covers using the <code>MyBannerPlugin</code> in Rspack configuration.</p>
+<p>Check the <code>examples/use-plugin/build.js</code> file in the <a href="https://github.com/rspack-contrib/rspack-binding-template/blob/main/examples/use-plugin/build.js">rspack-binding-template</a> repository. With the <code>MyBannerPlugin</code> wrapper created in the previous section, you can now use it in Rspack configuration.</p>
+<pre><code class="language-js ignore">const path = require('node:path');
+
+const rspack = require('@rspack-template/test-core');
+
+const compiler = rspack({
+  context: __dirname,
+  mode: 'development',
+  entry: {
+    main: './src/index.js',
+  },
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+  },
+  plugins: [
+    new rspack.MyBannerPlugin(
+      '/** Generated by MyBannerPlugin in `@rspack-template/binding` */'
+    ),
+  ],
+});
+
+compiler.run((err, stats) =&gt; {
+  if (err) {
+    console.error(err);
+  }
+  console.info(stats.toString({ colors: true }));
+});
+</code></pre>
+<h2 id="5-testing-the-plugin"><a class="header" href="#5-testing-the-plugin">5. Testing the Plugin</a></h2>
+<p>Run <code>node examples/use-plugin/build.js</code> to see the plugin in action. Check the output in <code>dist/main.js</code> to see the banner comment added to the top of the file:</p>
+<pre><code class="language-js ignore">/** Generated by MyBannerPlugin in `@rspack-template/binding` */(() =&gt; { // webpackBootstrap
+var __webpack_modules__ = ({
+"./src/index.js":
+...
+</code></pre>
+<p>This is the same command as in <a href="custom-binding/first-custom-binding/./setup.html">Verify Setup</a>, but now you understand what's happening behind the scenes.</p>
+<h2 id="summary-1"><a class="header" href="#summary-1">Summary</a></h2>
+<p>You've learned how to:</p>
+<ul>
+<li>Create a plugin in Rust and expose it to JavaScript using NAPI bindings</li>
+<li>Create a JavaScript wrapper for the plugin</li>
+<li>Reuse the <code>@rspack/core</code> package to create a new core package replacing the original <code>@rspack/core</code> package</li>
+<li>Use the plugin in Rspack configuration</li>
+</ul>
+<p>Next, you'll learn to <a href="custom-binding/first-custom-binding/./release.html">release</a> the plugin to npm with <a href="https://docs.github.com/actions">GitHub Actions</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="release"><a class="header" href="#release">Release</a></h1>
+<p>This chapter covers releasing your plugin to npm using GitHub Actions. The template includes a complete <a href="https://github.com/rspack-contrib/rspack-binding-template/blob/main/.github/workflows/release.yml">release workflow</a> that automatically handles building, testing, and publishing.</p>
+<h2 id="release-workflow"><a class="header" href="#release-workflow">Release Workflow</a></h2>
+<h3 id="prerequisites-4"><a class="header" href="#prerequisites-4">Prerequisites</a></h3>
+<p>Before releasing, ensure you have completed these requirements:</p>
+<h4 id="1-update-repository-information"><a class="header" href="#1-update-repository-information">1. Update Repository Information</a></h4>
+<p>You <strong>must</strong> update the repository URLs in your <code>package.json</code> files to match your actual repository, otherwise you'll encounter a Sigstore provenance verification error during publishing:</p>
+<pre><code class="language-text">npm error 422 Unprocessable Entity - PUT https://registry.npmjs.org/@your-scope%2fyour-package-darwin-x64
+Error verifying sigstore provenance bundle: Failed to validate repository information:
+package.json: "repository.url" is "git+https://github.com/rspack-contrib/rspack-binding-template.git",
+expected to match "https://github.com/your-username/your-repository" from provenance
+</code></pre>
+<p>Update the following files:</p>
+<ul>
+<li><code>package.json</code> - Update the <code>repository.url</code>, <code>bugs.url</code>, and <code>homepage</code> fields</li>
+<li><code>crates/binding/package.json</code> - Update the <code>repository.url</code>, <code>bugs.url</code>, and <code>homepage</code> fields</li>
+</ul>
+<p>For example, change:</p>
+<pre><code class="language-json">{
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rspack-contrib/rspack-binding-template.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rspack-contrib/rspack-binding-template/issues"
+  },
+  "homepage": "https://github.com/rspack-contrib/rspack-binding-template#readme"
+}
+</code></pre>
+<p>To:</p>
+<pre><code class="language-json">{
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-username/your-repository.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/your-repository/issues"
+  },
+  "homepage": "https://github.com/your-username/your-repository#readme"
+}
+</code></pre>
+<h4 id="2-configure-npm-token"><a class="header" href="#2-configure-npm-token">2. Configure NPM Token</a></h4>
+<p>The release workflow requires an <a href="https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/using-secrets-in-github-actions#creating-secrets-for-an-environment"><em>Environment secret</em></a> with <code>NPM_TOKEN</code> to be set in the repository settings:</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click Settings. If you cannot see the "Settings" tab, select the dropdown menu, then click Settings.</p>
+</li>
+</ol>
+<img src="custom-binding/first-custom-binding/../../images/repository-settings-button.png" alt="Repository settings button" height="100" />
+<ol start="3">
+<li>
+<p>In the left sidebar, click Environments.</p>
+</li>
+<li>
+<p>Click "New environment" to add a new environment.</p>
+</li>
+</ol>
+<img src="custom-binding/first-custom-binding/../../images/repository-settings-environments.png" alt="Repository settings environments" height="250" />
+<ol start="5">
+<li>
+<p>Type <code>npm</code> as the name for the environment.</p>
+</li>
+<li>
+<p>Click "Add environment secret".</p>
+</li>
+<li>
+<p>Enter the name for your secret as "NPM_TOKEN".</p>
+</li>
+<li>
+<p>Enter the value for your secret.</p>
+<blockquote>
+<p><strong>Note:</strong> If you don't have a token, you can follow this guide to <a href="https://docs.npmjs.com/creating-and-viewing-access-tokens/">create a new token</a>.</p>
+<p>If you're using "Granular Access Token", make sure to select the "Read and write" scope and select "Only select packages and scopes" and select the scope for the package you want to publish (e.g. <code>@rspack-template</code>).</p>
+</blockquote>
+</li>
+<li>
+<p>Click Add secret.</p>
+</li>
+</ol>
+<img src="custom-binding/first-custom-binding/../../images/repository-settings-environments-secrets.png" alt="Repository settings environments secrets" height="300" />
+<h3 id="1-create-a-release-branch"><a class="header" href="#1-create-a-release-branch">1. Create a Release Branch</a></h3>
+<p>To release a new version, create a new branch. You can use any branch name, but it's recommended to use a name indicating the version you're releasing.</p>
+<p>For example, if you're releasing version <code>0.0.1</code>, create a branch named <code>release-v0.0.1</code>.</p>
+<pre><code class="language-bash">git checkout -b release-v0.0.1
+</code></pre>
+<h3 id="2-trigger-a-version-bump"><a class="header" href="#2-trigger-a-version-bump">2. Trigger a Version Bump</a></h3>
+<p>Before releasing, bump the versions in both <code>package.json</code> and <code>crates/binding/package.json</code>.</p>
+<p>rspack-binding-template doesn't include any version bump tool. You can either manually bump the versions in both <code>package.json</code> files or set up any version bump tool.</p>
+<p>For example: <a href="https://github.com/h-a-n-a/my-rspack-binding/pull/1">PR: chore: release v0.0.1</a></p>
+<h3 id="3-trigger-the-release-workflow"><a class="header" href="#3-trigger-the-release-workflow">3. Trigger the Release Workflow</a></h3>
+<ol>
+<li>Navigate to <strong>Actions</strong> → <strong>Release</strong> in your repository</li>
+<li>Click <strong>Run workflow</strong></li>
+<li>Configure options:
+<ul>
+<li><strong>Use workflow from</strong>: Select the branch to release from (in this case, <code>release-v0.0.1</code>)</li>
+<li><strong>Dry-run mode</strong>: Test without publishing</li>
+<li><strong>NPM tag</strong>: Choose <code>latest</code>, <code>alpha</code>, <code>beta</code>, or <code>canary</code></li>
+</ul>
+</li>
+<li>Click the <strong>Run workflow</strong> button in the popover</li>
+</ol>
+<img src="custom-binding/first-custom-binding/../../images/repository-actions-release.png" alt="Release workflow selection" height="500" />
+<p>The workflow will trigger and you can monitor progress in the <strong>Actions</strong> tab.</p>
+<p>For example: <a href="https://github.com/h-a-n-a/my-rspack-binding/actions/runs/16519440059">Release v0.0.1</a></p>
+<img src="custom-binding/first-custom-binding/../../images/repository-actions-release-workflow.png" alt="Release workflow run" height="500" />
+<h2 id="workflow-deep-dive"><a class="header" href="#workflow-deep-dive">Workflow Deep Dive</a></h2>
+<p>The workflow consists of three sequential jobs:</p>
+<h3 id="1-build"><a class="header" href="#1-build">1. Build</a></h3>
+<p>Compiles the Node.js addon for all supported targets using the <a href="https://github.com/rspack-contrib/rspack-toolchain/blob/main/.github/workflows/build.yml">rspack-toolchain build workflow</a>. The build uses the release profile for optimal performance:</p>
+<pre><code class="language-toml">[profile.release]
+codegen-units = 1
+debug = false
+lto = "fat"
+opt-level = 3
+panic = "abort"
+strip = true
+</code></pre>
+<h3 id="2-test"><a class="header" href="#2-test">2. Test</a></h3>
+<p>Validates the built bindings using the test suite to ensure everything works correctly before publishing.</p>
+<h3 id="3-release"><a class="header" href="#3-release">3. Release</a></h3>
+<p>Publishes the packages to the npm registry:</p>
+<ol>
+<li><strong>Environment Setup</strong>: Configures Node.js 22, pnpm, and dependency caching</li>
+<li><strong>Artifact Processing</strong>: Downloads compiled bindings and organizes them into platform-specific npm packages using <code>pnpm napi create-npm-dirs</code> and <code>pnpm napi artifacts</code></li>
+<li><strong>Package Preparation</strong>: Configures npm authentication and runs <code>pnpm napi pre-publish</code> to prepare platform packages</li>
+<li><strong>Publishing</strong>: Uses <code>pnpm publish -r</code> to publish all packages with the specified tag</li>
+</ol>
+<h2 id="package-provenance"><a class="header" href="#package-provenance">Package Provenance</a></h2>
+<p>All packages published through this workflow include <a href="https://docs.npmjs.com/generating-provenance-statements#about-npm-provenance">npm provenance</a> statements, enhancing supply-chain security by:</p>
+<ul>
+<li><strong>Provenance attestation</strong>: Publicly links packages to their source code and build instructions, allowing developers to verify where and how packages were built</li>
+<li><strong>Publish attestation</strong>: Generated by the npm registry when packages are published by authorized users</li>
+</ul>
+<p>The workflow automatically enables provenance using the <code>--provenance</code> flag. Packages are signed by <a href="https://docs.npmjs.com/generating-provenance-statements#about-sigstore">Sigstore</a> public servers and logged in a public transparency ledger, providing verifiable proof of the package's origin and build process.</p>
+<h2 id="supported-targets"><a class="header" href="#supported-targets">Supported Targets</a></h2>
+<p>The workflow builds for these targets:</p>
+<pre><code class="language-text">x86_64-apple-darwin
+x86_64-pc-windows-msvc
+x86_64-unknown-linux-gnu
+x86_64-unknown-linux-musl
+i686-pc-windows-msvc
+aarch64-unknown-linux-gnu
+aarch64-apple-darwin
+aarch64-unknown-linux-musl
+aarch64-pc-windows-msvc
+armv7-linux-androideabi
+armv7-unknown-linux-gnueabihf
+aarch64-linux-android
+</code></pre>
+<p>For the complete list, see <a href="https://github.com/rspack-contrib/rspack-toolchain?tab=readme-ov-file#supported-targets">rspack-toolchain supported targets</a>.</p>
+<h2 id="manual-release"><a class="header" href="#manual-release">Manual Release</a></h2>
+<p>To trigger a release:</p>
+<ol>
+<li>Navigate to <strong>Actions</strong> → <strong>Release</strong> in your repository</li>
+<li>Click <strong>Run workflow</strong></li>
+<li>Configure options:
+<ul>
+<li><strong>Dry-run mode</strong>: Test without publishing (recommended first)</li>
+<li><strong>NPM tag</strong>: Choose <code>latest</code>, <code>alpha</code>, <code>beta</code>, or <code>canary</code></li>
+</ul>
+</li>
+</ol>
+<p>The workflow will automatically build, test, and publish your plugin packages to npm, making them available for installation.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="create-a-loader"><a class="header" href="#create-a-loader">Create a Loader</a></h1>
+<p>This chapter explores creating a custom loader for Rspack using the <code>MyBannerLoader</code> example. While the loader is already implemented in the template, we'll walk you through creating this loader from scratch and using it in JavaScript. This demonstrates the complete workflow from Rust implementation to JavaScript integration.</p>
+<h2 id="what-is-builtinmy-banner-loader"><a class="header" href="#what-is-builtinmy-banner-loader">What is <code>builtin:my-banner-loader</code>?</a></h2>
+<p><code>builtin:my-banner-loader</code> is a simple loader that prepends a configurable banner comment to the top of modules.</p>
+<h2 id="prerequisites-5"><a class="header" href="#prerequisites-5">Prerequisites</a></h2>
+<p>Before starting this tutorial, ensure you've completed the <a href="custom-binding/./first-custom-binding/setup.html">setup process</a> and can successfully run the example plugin.</p>
+<h2 id="overview-1"><a class="header" href="#overview-1">Overview</a></h2>
+<p>We'll guide you through the loader creation process in these steps:</p>
+<ol>
+<li><strong>Understand the Loader Structure</strong> - Examine the basic Rust loader structure</li>
+<li><strong>Implement the Loader Logic</strong> - Understand how the banner functionality works with async traits and caching</li>
+<li><strong>Loader Plugin Integration</strong> - Learn how loaders are registered via plugins (critical step)</li>
+<li><strong>NAPI Bindings</strong> - See how both loader and plugin functionality are exposed to JavaScript</li>
+<li><strong>JavaScript Integration</strong> - Learn the two-step process: register plugin, then use loader</li>
+<li><strong>Testing the Loader</strong> - Learn how to verify the loader works correctly</li>
+</ol>
+<blockquote>
+<p><strong>⚠️ Important:</strong> Builtin loaders require plugin registration before they can be used in build configurations.</p>
+</blockquote>
+<p>Let's explore the <code>MyBannerLoader</code> implementation.</p>
+<h2 id="1-understand-the-loader-structure"><a class="header" href="#1-understand-the-loader-structure">1. Understand the Loader Structure</a></h2>
+<p><code>MyBannerLoader</code> is implemented in Rust and follows the standard loader structure with a companion plugin for registration.</p>
+<ul>
+<li><code>crates/binding/src/lib.rs</code> - The glue code that exports both the loader and plugin to JavaScript</li>
+<li><code>crates/binding/src/loader.rs</code> - The <code>MyBannerLoader</code> implementation and <code>MyBannerLoaderPlugin</code></li>
+</ul>
+<h2 id="2-implement-the-loader-logic"><a class="header" href="#2-implement-the-loader-logic">2. Implement the Loader Logic</a></h2>
+<p><code>MyBannerLoader</code> prepends a configurable banner comment to source files during the build process.</p>
+<p>Before starting, add these dependencies to your <code>Cargo.toml</code> file:</p>
+<ul>
+<li><code>rspack_core</code> - The Rspack core API</li>
+<li><code>rspack_error</code> - The Rspack error handling API</li>
+<li><code>rspack_cacheable</code> - For making loaders cacheable</li>
+<li><code>async_trait</code> - For async trait implementations</li>
+</ul>
+<h3 id="21-initialize-the-loader"><a class="header" href="#21-initialize-the-loader">2.1 Initialize the Loader</a></h3>
+<p><code>MyBannerLoader</code> is implemented as a struct with a <code>banner</code> field containing the banner comment to prepend.</p>
+<pre><code class="language-rust ignore">use std::sync::Arc;
+
+use async_trait::async_trait;
+use rspack_cacheable::{cacheable, cacheable_dyn, with::AsPreset};
+use rspack_core::{
+  Context, Loader, LoaderContext, LoaderRunnerContext, Plugin, PluginContext,
+  PluginExt,
+};
+use rspack_error::{internal_error, Result};
+
+#[cacheable]
+#[derive(Debug)]
+pub struct MyBannerLoader {
+  banner: String,
+}
+
+impl MyBannerLoader {
+  pub fn new(banner: String) -&gt; Self {
+    Self { banner }
+  }
+}</code></pre>
+<h3 id="22-implement-the-loader-trait-with-async-processing"><a class="header" href="#22-implement-the-loader-trait-with-async-processing">2.2 Implement the Loader Trait with Async Processing</a></h3>
+<p>The loader implements the <code>Loader</code> trait using async processing and caching support.</p>
+<blockquote>
+<p><strong>Note:</strong> Use <code>#[rspack_cacheable::cacheable]</code> to make your loader cacheable, as Rspack binding supports persistent cache for better performance. This ensures unchanged files aren't reprocessed, significantly improving build times.</p>
+</blockquote>
+<pre><code class="language-rust ignore">#[rspack_cacheable::cacheable_dyn]
+#[async_trait]
+impl Loader for MyBannerLoader {
+  async fn run(&amp;self, loader_context: &amp;mut LoaderContext&lt;LoaderRunnerContext&gt;) -&gt; Result&lt;()&gt; {
+    let source = loader_context.take_content();
+
+    if let Some(source) = source {
+      let source = source.try_into_string()?;
+      let source = format!("{}\n{}", self.banner, source);
+      loader_context.finish_with(source);
+    } else {
+      loader_context.finish_with_empty();
+    }
+    Ok(())
+  }
+}
+
+
+// Implement the Identifiable trait to provide a unique identifier for the loader
+// This identifier is used by Rspack's internal caching system to identify
+// and track this specific loader instance
+impl rspack_collections::Identifiable for MyBannerLoader {
+  fn identifier(&amp;self) -&gt; rspack_collections::Identifier {
+    rspack_collections::Identifier::from("builtin:my-banner-loader")
+  }
+}</code></pre>
+<h3 id="23-conclusion-1"><a class="header" href="#23-conclusion-1">2.3 Conclusion</a></h3>
+<p>You've learned how to create a loader in Rust with async support and caching. The loader processes source content by prepending a banner string.</p>
+<p>Next, you'll learn how to register this loader through a plugin.</p>
+<h2 id="3-loader-plugin-integration"><a class="header" href="#3-loader-plugin-integration">3. Loader Plugin Integration</a></h2>
+<p><strong>Critical Step:</strong> Custom loaders must be registered via a plugin before they can be used in build configurations. This is accomplished through a companion plugin.</p>
+<h3 id="31-create-the-loader-plugin"><a class="header" href="#31-create-the-loader-plugin">3.1 Create the Loader Plugin</a></h3>
+<pre><code class="language-rust ignore">#[plugin]
+#[derive(Debug)]
+pub struct MyBannerLoaderPlugin;
+
+impl MyBannerLoaderPlugin {
+  pub fn new() -&gt; Self {
+    Self::new_inner()
+  }
+}
+
+/// Resolves the `builtin:my-banner-loader` loader
+#[plugin_hook(NormalModuleFactoryResolveLoader for MyBannerLoaderPlugin, tracing = false)]
+pub(crate) async fn resolve_loader(
+  &amp;self,
+  _context: &amp;rspack_core::Context,
+  _resolver: &amp;rspack_core::Resolver,
+  loader: &amp;rspack_core::ModuleRuleUseLoader,
+) -&gt; Result&lt;Option&lt;rspack_core::BoxLoader&gt;&gt; {
+  if loader.loader.starts_with("builtin:my-banner-loader") {
+    let banner = loader.options.clone().unwrap_or_default();
+    return Ok(Some(Arc::new(MyBannerLoader::new(banner))));
+  }
+
+  Ok(None)
+}
+
+impl rspack_core::Plugin for MyBannerLoaderPlugin {
+  fn apply(&amp;self, ctx: &amp;mut rspack_core::ApplyContext) -&gt; Result&lt;()&gt; {
+    ctx
+      .normal_module_factory_hooks
+      .resolve_loader
+      .tap(resolve_loader::new(self));
+    Ok(())
+  }
+}</code></pre>
+<h3 id="32-why-plugin-registration-is-required"><a class="header" href="#32-why-plugin-registration-is-required">3.2 Why Plugin Registration is Required</a></h3>
+<p>Loaders must be registered in Rspack's loader resolution system. The <code>MyBannerLoaderPlugin</code>:</p>
+<ol>
+<li><strong>Registers the loader</strong> with a specific name (<code>builtin:my-banner-loader</code>)</li>
+<li><strong>Makes it available</strong> for use in build configurations</li>
+<li><strong>Integrates with</strong> Rspack's loader resolution mechanism</li>
+</ol>
+<p>Without this plugin registration, the loader won't be found when referenced in build configurations.</p>
+<h3 id="33-conclusion-1"><a class="header" href="#33-conclusion-1">3.3 Conclusion</a></h3>
+<p>You've learned that custom loaders require plugin registration. The companion plugin registers the loader in Rspack's resolution system, making it available for use.</p>
+<p>Next, you'll learn how to expose both components to JavaScript.</p>
+<h2 id="4-napi-bindings"><a class="header" href="#4-napi-bindings">4. NAPI Bindings</a></h2>
+<p>This section covers exposing both the loader and its registration plugin to JavaScript using NAPI bindings.</p>
+<h3 id="41-expose-both-components-to-javascript"><a class="header" href="#41-expose-both-components-to-javascript">4.1 Expose Both Components to JavaScript</a></h3>
+<p>To use the loader in JavaScript, expose both the loader logic and the registration plugin.</p>
+<p>Add these dependencies to your <code>Cargo.toml</code>:</p>
+<ul>
+<li><code>rspack_binding_builder</code> - Rspack binding builder API</li>
+<li><code>rspack_binding_builder_macros</code> - Rspack binding builder macros</li>
+<li><a href="https://docs.rs/napi/latest/napi/"><code>napi</code></a> - NAPI-RS crate</li>
+<li><a href="https://docs.rs/napi_derive/latest/napi_derive/"><code>napi_derive</code></a> - NAPI-RS derive macro</li>
+</ul>
+<p>The <code>crates/binding/src/lib.rs</code> file exports both components to JavaScript:</p>
+<pre><code class="language-rust ignore">mod loader;
+
+use napi::bindgen_prelude::*;
+use rspack_binding_builder_macros::register_plugin;
+use rspack_core::BoxPlugin;
+
+#[macro_use]
+extern crate napi_derive;
+extern crate rspack_binding_builder;
+
+// Register the loader plugin that makes the loader available
+register_plugin!("MyBannerLoaderPlugin", |_env: Env, _options: Unknown&lt;'_&gt;| {
+  Ok(Box::new(loader::MyBannerLoaderPlugin::new()) as BoxPlugin)
+});</code></pre>
+<h3 id="42-registration-pattern"><a class="header" href="#42-registration-pattern">4.2 Registration Pattern</a></h3>
+<p>The <code>register_plugin</code> macro creates the JavaScript binding for the plugin that registers our loader. This follows the same pattern as regular plugins but serves the specific purpose of loader registration.</p>
+<h3 id="43-conclusion"><a class="header" href="#43-conclusion">4.3 Conclusion</a></h3>
+<p>You've exposed the loader registration plugin to JavaScript. This allows registering the loader from JavaScript before using it in build configurations.</p>
+<h2 id="5-javascript-integration"><a class="header" href="#5-javascript-integration">5. JavaScript Integration</a></h2>
+<p>This section covers the two-step process for using custom loaders: register the plugin, then use the loader.</p>
+<h3 id="51-create-javascript-plugin-wrapper"><a class="header" href="#51-create-javascript-plugin-wrapper">5.1 Create JavaScript Plugin Wrapper</a></h3>
+<p>First, create a wrapper for the loader registration plugin in your <code>lib/index.js</code>:</p>
+<pre><code class="language-js ignore">// Rewrite the RSPACK_BINDING environment variable
+process.env.RSPACK_BINDING = require('node:path').dirname(
+  require.resolve('@rspack-template/test-binding')
+);
+
+const binding = require('@rspack-template/test-binding');
+
+// Register the loader plugin
+binding.registerMyBannerLoaderPlugin();
+
+const core = require('@rspack/core');
+
+// Create wrapper for the loader registration plugin
+const MyBannerLoaderPlugin = core.experiments.createNativePlugin(
+  'MyBannerLoaderPlugin',
+  function (options) {
+    return options;
+  }
+);
+
+// Export the plugin
+Object.defineProperty(core, 'MyBannerLoaderPlugin', {
+  value: MyBannerLoaderPlugin,
+});
+
+module.exports = core;
+</code></pre>
+<h3 id="52-two-step-usage-process"><a class="header" href="#52-two-step-usage-process">5.2 Two-Step Usage Process</a></h3>
+<p><strong>Step 1: Register the Loader Plugin</strong></p>
+<p>In your build configuration, first add the loader registration plugin:</p>
+<pre><code class="language-js ignore">const path = require('node:path');
+const rspack = require('@rspack-template/test-core');
+
+const compiler = rspack({
+  context: __dirname,
+  mode: 'development',
+  entry: {
+    main: './src/index.js',
+  },
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+  },
+  plugins: [
+    // Step 1: Register the loader
+    new rspack.MyBannerLoaderPlugin(),
+  ],
+  // Step 2: Use the loader
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: [
+          {
+            loader: 'builtin:my-banner-loader',
+            options: '/** Generated by builtin:my-banner-loader */',
+          },
+        ],
+      },
+    ],
+  },
+});
+</code></pre>
+<p><strong>Step 2: Configure the Loader</strong></p>
+<p>Once the plugin is registered, you can use the loader in module rules with the registered name <code>builtin:my-banner-loader</code>.</p>
+<h3 id="53-complete-example"><a class="header" href="#53-complete-example">5.3 Complete Example</a></h3>
+<p>Check the <code>examples/use-loader/build.js</code> file in the <a href="https://github.com/rspack-contrib/rspack-binding-template/blob/main/examples/use-loader/build.js">rspack-binding-template</a> repository for a complete working example.</p>
+<h2 id="6-testing-the-loader"><a class="header" href="#6-testing-the-loader">6. Testing the Loader</a></h2>
+<p>Run the example to see the loader in action:</p>
+<pre><code class="language-bash">node examples/use-loader/build.js
+</code></pre>
+<p>Check the output in the <code>dist/main.js</code> file to see the banner comment added to the top of the modules.</p>
+<h2 id="summary-2"><a class="header" href="#summary-2">Summary</a></h2>
+<p>You've learned how to:</p>
+<ul>
+<li>Create a cacheable loader in Rust with async processing</li>
+<li>Understand the critical importance of plugin registration for custom loaders</li>
+<li>Expose both loader and registration plugin to JavaScript using NAPI bindings</li>
+<li>Follow the two-step process: register plugin first, then use loader</li>
+<li>Configure and test the loader in build configurations</li>
+</ul>
+<p>This pattern can be extended to create more complex loaders for various source transformations. The key concepts of plugin registration and cacheable implementation remain consistent across different loader implementations.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="references"><a class="header" href="#references">References</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bump-rspack-version"><a class="header" href="#bump-rspack-version">Bump Rspack Version</a></h1>
+<p>This guide covers how to update Rspack versions in your custom binding project. There are two main approaches: using automated tools like Renovate bot or manually updating version files.</p>
+<h2 id="version-mapping-strategy"><a class="header" href="#version-mapping-strategy">Version Mapping Strategy</a></h2>
+<p>Rspack follows a specific version mapping between Npm packages and Rust crates:</p>
+<ul>
+<li><strong>Npm packages</strong> (including <code>@rspack/core</code>): Use the full semantic version (e.g., <code>1.5.0</code>, <code>1.4.9-alpha.0</code>)</li>
+<li><strong>Rust crates</strong>: Use the version without the major version prefix (e.g., <code>0.5.0</code>, <code>0.4.9-alpha.0</code>)</li>
+</ul>
+<p><strong>Formula</strong>: <code>crate version = npm major version - 1</code></p>
+<p>This mapping ensures consistency across the ecosystem. Note that Rust crates are <strong>NOT</strong> following semantic versioning conventions due to the version mapping strategy.</p>
+<blockquote>
+<p><strong>Note</strong>: This version mapping only applies to crates released in the rspack repository. Other crates like <code>rspack-sources</code> have different versioning strategies.</p>
+</blockquote>
+<blockquote>
+<p><strong>Important</strong>: If the version of <code>@rspack/core</code> and Rust crates don't match according to this mapping, Rspack will report an error. See the <a href="https://github.com/web-infra-dev/rspack/blob/06bd5ba177ed7d73c6feda7e0619172b77adc797/packages/rspack/src/util/bindingVersionCheck.ts#L9">binding version check implementation</a> for details.</p>
+</blockquote>
+<h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Npm Package Version</th><th>Rust Crate Version</th></tr></thead><tbody>
+<tr><td><code>1.5.0</code></td><td><code>0.5.0</code></td></tr>
+<tr><td><code>1.4.9</code></td><td><code>0.4.9</code></td></tr>
+<tr><td><code>1.4.9-alpha.0</code></td><td><code>0.4.9-alpha.0</code></td></tr>
+</tbody></table>
+</div>
+<p>For example, in the <a href="https://github.com/rspack-contrib/rspack-binding-template">rspack-binding-template</a>:</p>
+<ul>
+<li><strong>package.json</strong>: <code>"@rspack/core": "1.5.0-beta.0"</code></li>
+<li><strong>Cargo.toml</strong>: <code>rspack_core = { version = "=0.5.0-beta.0" }</code> (the <code>=</code> prefix ensures exact version matching)</li>
+</ul>
+<p>This mapping ensures consistency across the ecosystem while following Rust's semantic versioning conventions.</p>
+<h2 id="automated-updates-with-renovate-bot"><a class="header" href="#automated-updates-with-renovate-bot">Automated Updates with Renovate Bot</a></h2>
+<p>Renovate bot can automatically keep your Rspack dependencies up to date by monitoring both <code>package.json</code> and <code>Cargo.toml</code> files.</p>
+<h3 id="setup-1"><a class="header" href="#setup-1">Setup</a></h3>
+<ol>
+<li>
+<p><strong>Enable Renovate</strong>: Add Renovate to your GitHub repository through the <a href="https://github.com/apps/renovate">GitHub App</a>.</p>
+</li>
+<li>
+<p><strong>Configuration</strong>:</p>
+<ul>
+<li>If you're using the <a href="https://github.com/rspack-contrib/rspack-binding-template">rspack-binding-template</a>, the Renovate configuration is already set up for you.</li>
+<li>For other projects, you can reference the <a href="https://github.com/rspack-contrib/rspack-binding-template/blob/main/.github/renovate.json">renovate.json</a> file in the rspack-binding-template repository and copy it to your repository's <code>.github/renovate.json</code> file.</li>
+</ul>
+</li>
+</ol>
+<h3 id="key-features"><a class="header" href="#key-features">Key Features</a></h3>
+<ul>
+<li><strong>Automatic Detection</strong>: Renovate automatically finds <code>package.json</code> and <code>Cargo.toml</code> files</li>
+<li><strong>Grouped Updates</strong>: Related Rspack dependencies are updated together</li>
+<li><strong>Lock File Management</strong>: Updates <code>Cargo.lock</code> and <code>package-lock.json</code>/<code>pnpm-lock.yaml</code></li>
+<li><strong>Scheduled Updates</strong>: Configure when updates should be proposed</li>
+</ul>
+<h3 id="configuration-features"><a class="header" href="#configuration-features">Configuration Features</a></h3>
+<p>The template configuration includes:</p>
+<ul>
+<li><strong>Grouped Updates</strong>: All Rspack-related dependencies are updated together</li>
+<li><strong>Scheduled Updates</strong>: Updates are proposed on a regular schedule</li>
+<li><strong>Lock File Management</strong>: Automatic updates to <code>Cargo.lock</code> and Npm lock files</li>
+<li><strong>Version Strategy</strong>: Optimized for Rspack's versioning approach</li>
+</ul>
+<h2 id="manual-version-bump-process"><a class="header" href="#manual-version-bump-process">Manual Version Bump Process</a></h2>
+<p>When you need to update Rspack versions manually, follow these steps to ensure consistency across your project.</p>
+<h3 id="prerequisites-6"><a class="header" href="#prerequisites-6">Prerequisites</a></h3>
+<p>Before starting the manual bump process, ensure you have:</p>
+<ul>
+<li>Access to edit both <code>Cargo.toml</code> (workspace root) and <code>package.json</code> files</li>
+<li>Understanding of the <a href="custom-binding/references/bump-rspack-version.html#version-mapping-strategy">version mapping strategy</a></li>
+<li>A clean git working directory</li>
+</ul>
+<h3 id="step-by-step-process"><a class="header" href="#step-by-step-process">Step-by-Step Process</a></h3>
+<ol>
+<li>
+<p><strong>Identify Target Version</strong></p>
+<p>Determine the Rspack version you want to upgrade to:</p>
+<ul>
+<li>Check <a href="https://github.com/web-infra-dev/rspack/releases">Rspack releases</a> for the latest version</li>
+<li>Note both Npm package version and corresponding Rust crate version</li>
+</ul>
+</li>
+<li>
+<p><strong>Update Workspace Cargo.toml</strong></p>
+<p>Edit the workspace root <code>Cargo.toml</code> file:</p>
+<pre><code class="language-toml">[workspace.dependencies]
+# Before (example)
+rspack_core = "0.4.9"
+rspack_hook = "0.4.9"
+
+# After (example)
+rspack_core = "0.5.0"
+rspack_hook = "0.5.0"
+</code></pre>
+</li>
+<li>
+<p><strong>Update package.json Files</strong></p>
+<p>Update the <code>package.json</code> file in the root:</p>
+<pre><code class="language-json">{
+  "dependencies": {
+    "@rspack/core": "1.5.0"
+  }
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Update Lock Files</strong></p>
+<p>Regenerate lock files to ensure consistency:</p>
+<pre><code class="language-bash"># For Npm dependencies
+pnpm install
+
+# For Rust dependencies
+pnpm run build # This will automatically update Cargo.lock and build the rust bindings
+</code></pre>
+</li>
+</ol>
+<h2 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h2>
+<h3 id="recommended-approach"><a class="header" href="#recommended-approach">Recommended Approach</a></h3>
+<ol>
+<li><strong>Use Renovate for Regular Updates</strong>: Set up Renovate bot for automated dependency updates</li>
+<li><strong>Group Related Updates</strong>: Update all Rspack dependencies together to avoid compatibility issues</li>
+<li><strong>Test Thoroughly</strong>: Always run your test suite after version updates</li>
+<li><strong>Update Gradually</strong>: For major version bumps, consider updating in stages</li>
+</ol>
+<h3 id="version-management-strategy"><a class="header" href="#version-management-strategy">Version Management Strategy</a></h3>
+<ul>
+<li><strong>Patch Updates</strong>: Can often be automated and merged quickly</li>
+<li><strong>Minor Updates</strong>: Review changelog for new features and potential breaking changes</li>
+<li><strong>Major Updates</strong>: Always review manually and test thoroughly</li>
+<li><strong>Pre-release Versions</strong>: Use with caution in production environments</li>
+</ul>
+<h2 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h2>
+<h3 id="common-issues"><a class="header" href="#common-issues">Common Issues</a></h3>
+<p><strong>Version Mismatch Between @rspack/core and Custom Binding</strong></p>
+<pre><code class="language-text">Unmatched version @rspack/core@1.5.0 and binding version.
+
+Help:
+    Looks like you are using a custom binding (via environment variable 'RSPACK_BINDING=/path/to/binding').
+    The expected version of @rspack/core to the current binding is 1.5.0-beta.0.
+</code></pre>
+<p><em>Solution</em>: Ensure your custom binding and <code>@rspack/core</code> versions follow the <a href="custom-binding/references/bump-rspack-version.html#version-mapping-strategy">version mapping strategy</a>. Update both to matching versions.</p>
+<h3 id="getting-help"><a class="header" href="#getting-help">Getting Help</a></h3>
+<ul>
+<li>Check the <a href="https://rspack.dev/">Rspack documentation</a></li>
+<li>Review <a href="https://github.com/web-infra-dev/rspack/releases">Rspack releases</a> for changelog information</li>
+<li>Visit the <a href="https://discord.gg/79ZZ66GH9E">Rspack Discord</a> for community support</li>
+<li>Review the <a href="custom-binding/references/../first-custom-binding/release.html">release workflow documentation</a> for related processes</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="github-workflow"><a class="header" href="#github-workflow">GitHub Workflow</a></h1>
+<p>This reference guide covers GitHub Actions workflows for Rspack custom bindings, using the rspack-toolchain and real-world examples from rspack-binding-template.</p>
+<h2 id="rspack-toolchain"><a class="header" href="#rspack-toolchain">Rspack Toolchain</a></h2>
+<p>The <a href="https://github.com/rspack-contrib/rspack-toolchain">rspack-toolchain</a> provides reusable GitHub Actions for building and managing native Rspack bindings across multiple platforms.</p>
+<h3 id="available-actions"><a class="header" href="#available-actions">Available Actions</a></h3>
+<h4 id="1-build-workflow-buildyml"><a class="header" href="#1-build-workflow-buildyml">1. Build Workflow (<code>build.yml</code>)</a></h4>
+<p>A reusable workflow for cross-platform native binding compilation.</p>
+<p><strong>What it does:</strong></p>
+<ul>
+<li><strong>Phase 1 (get-napi-info job):</strong> Calls the <code>get-napi-info</code> action to parse your <code>package.json</code> and generate a dynamic build matrix</li>
+<li><strong>Phase 2 (build job):</strong> Uses the generated matrix to spawn parallel build jobs across different GitHub runners</li>
+<li><strong>Per-build job:</strong> Sets up platform-specific toolchains (Rust with target support, Node.js, pnpm)</li>
+<li><strong>Compilation:</strong> Executes your custom <code>napi-build-command</code> (e.g., <code>pnpm build --release</code>) for each target</li>
+<li><strong>Cross-compilation handling:</strong> Automatically installs additional tools like Zig for musl targets, sets up Android NDK for ARM builds</li>
+<li><strong>Artifact upload:</strong> Uploads each compiled <code>.node</code> file as a GitHub Actions artifact named <code>bindings-{target}</code></li>
+<li><strong>Dependency management:</strong> Caches Rust dependencies and Node.js packages for faster subsequent builds</li>
+</ul>
+<p><strong>Inputs:</strong></p>
+<ul>
+<li><code>package-json-path</code>: Path to binding package.json (default: <code>'crates/binding/package.json'</code>)</li>
+<li><code>napi-build-command</code>: Command to build NAPI binding (default: <code>'pnpm build'</code>)</li>
+</ul>
+<p><strong>Usage:</strong></p>
+<pre><code class="language-yaml">uses: rspack-contrib/rspack-toolchain/.github/workflows/build.yml@v1
+with:
+  package-json-path: 'crates/binding/package.json'
+  napi-build-command: 'pnpm build --release'
+</code></pre>
+<p><strong>Platform Support:</strong></p>
+<ul>
+<li>macOS (Intel: <code>x86_64-apple-darwin</code>, Apple Silicon: <code>aarch64-apple-darwin</code>)</li>
+<li>Windows (64-bit: <code>x86_64-pc-windows-msvc</code>, 32-bit: <code>i686-pc-windows-msvc</code>, ARM64: <code>aarch64-pc-windows-msvc</code>)</li>
+<li>Linux GNU (64-bit: <code>x86_64-unknown-linux-gnu</code>, ARM64: <code>aarch64-unknown-linux-gnu</code>)</li>
+<li>Linux musl (64-bit: <code>x86_64-unknown-linux-musl</code>, ARM64: <code>aarch64-unknown-linux-musl</code>)</li>
+<li>Android ARM (<code>armv7-linux-androideabi</code>, <code>aarch64-linux-android</code>)</li>
+</ul>
+<h4 id="2-get-napi-info-action-get-napi-info"><a class="header" href="#2-get-napi-info-action-get-napi-info">2. Get NAPI Info Action (<code>get-napi-info</code>)</a></h4>
+<p>Extracts NAPI targets from <code>package.json</code> and generates a build matrix.</p>
+<p><strong>What it does:</strong></p>
+<ul>
+<li><strong>File validation:</strong> Checks if the specified <code>package.json</code> file exists and is readable</li>
+<li><strong>Target extraction:</strong> Uses <code>jq</code> to parse the <code>napi.targets</code> array from your package.json</li>
+<li><strong>Target validation:</strong> Validates each target against a predefined list of supported platforms (rejects unsupported targets)</li>
+<li><strong>Runner mapping:</strong> Maps each target to the appropriate GitHub runner OS:
+<ul>
+<li><code>*-apple-darwin</code> → <code>macos-latest</code></li>
+<li><code>*-pc-windows-*</code> → <code>windows-latest</code></li>
+<li><code>*-unknown-linux-*</code> and <code>*-linux-*</code> → <code>ubuntu-latest</code></li>
+</ul>
+</li>
+<li><strong>Matrix generation:</strong> Creates a JSON build matrix that GitHub Actions can consume for parallel job execution</li>
+<li><strong>Path calculation:</strong> Determines the binding directory path by extracting the directory from the package.json path</li>
+<li><strong>Output provision:</strong> Sets GitHub Actions outputs (<code>matrix</code>, <code>binding-directory</code>, <code>targets</code>) for downstream jobs</li>
+</ul>
+<p><strong>Inputs:</strong></p>
+<ul>
+<li><code>package-json-path</code>: Path to binding package.json</li>
+<li><code>napi-build-command</code>: Command to build NAPI bindings</li>
+</ul>
+<p><strong>Outputs:</strong></p>
+<ul>
+<li>Build matrix configuration</li>
+<li>Binding directory path</li>
+</ul>
+<p><strong>Usage:</strong></p>
+<pre><code class="language-yaml">- uses: rspack-contrib/rspack-toolchain/get-napi-info@v1
+  with:
+    package-json-path: 'crates/binding/package.json'
+    napi-build-command: 'pnpm build'
+</code></pre>
+<h4 id="3-download-rspack-binding-action-download-rspack-binding"><a class="header" href="#3-download-rspack-binding-action-download-rspack-binding">3. Download Rspack Binding Action (<code>download-rspack-binding</code>)</a></h4>
+<p>Downloads native binding artifacts from GitHub Actions.</p>
+<p><strong>What it does:</strong></p>
+<ul>
+<li><strong>Selective downloading:</strong> If <code>target</code> input is provided, downloads only the artifact named <code>bindings-{target}</code></li>
+<li><strong>Bulk downloading:</strong> If no target specified, downloads all artifacts matching the <code>bindings-*</code> pattern</li>
+<li><strong>Artifact organization:</strong> Uses GitHub Actions' <code>actions/download-artifact@v4</code> to retrieve <code>.node</code> files</li>
+<li><strong>Path management:</strong> Places downloaded artifacts in the specified <code>path</code> directory (default: <code>artifacts</code>)</li>
+<li><strong>Dependency on build workflow:</strong> Expects artifacts to have been previously uploaded by the build workflow with the naming convention <code>bindings-{target}</code></li>
+<li><strong>Integration point:</strong> Serves as the bridge between the build phase and testing/publishing phases in CI/CD pipelines</li>
+</ul>
+<p><strong>Inputs:</strong></p>
+<ul>
+<li><code>target</code>: Optional specific target to download</li>
+<li><code>path</code>: Destination for downloaded artifacts</li>
+</ul>
+<p><strong>Usage:</strong></p>
+<pre><code class="language-yaml">- uses: rspack-contrib/rspack-toolchain/download-rspack-binding@v1
+  with:
+    target: ${{ matrix.target }}
+    path: ./bindings
+</code></pre>
+<h3 id="workflow-connections-and-data-flow"><a class="header" href="#workflow-connections-and-data-flow">Workflow Connections and Data Flow</a></h3>
+<p>The rspack-toolchain actions work together in a specific sequence:</p>
+<pre><code class="language-text">package.json → get-napi-info → build.yml → download-rspack-binding
+</code></pre>
+<p><strong>Data Flow:</strong></p>
+<ol>
+<li><strong>Input:</strong> Your <code>package.json</code> contains <code>napi.targets</code> array specifying platforms to build for</li>
+<li><strong>Matrix Generation:</strong> <code>get-napi-info</code> parses this and creates a GitHub Actions matrix</li>
+<li><strong>Parallel Builds:</strong> <code>build.yml</code> uses the matrix to spawn parallel jobs, each building for one target</li>
+<li><strong>Artifact Storage:</strong> Each build job uploads a <code>.node</code> file as artifact named <code>bindings-{target}</code></li>
+<li><strong>Artifact Retrieval:</strong> <code>download-rspack-binding</code> retrieves these artifacts for testing or publishing</li>
+</ol>
+<p><strong>Key Dependencies:</strong></p>
+<ul>
+<li><code>build.yml</code> depends on <code>get-napi-info</code> outputs (matrix, binding-directory)</li>
+<li><code>download-rspack-binding</code> depends on artifacts created by <code>build.yml</code></li>
+<li>All actions rely on consistent naming: <code>bindings-{target}</code> for artifacts</li>
+</ul>
+<p><strong>Typical Workflow Pattern:</strong></p>
+<pre><code class="language-yaml">jobs:
+  build:
+    uses: rspack-contrib/rspack-toolchain/.github/workflows/build.yml@v1
+  
+  test:
+    needs: [build]
+    steps:
+      - uses: rspack-contrib/rspack-toolchain/download-rspack-binding@v1
+      - run: # test the downloaded bindings
+  
+  release:
+    needs: [build, test]
+    steps:
+      - uses: rspack-contrib/rspack-toolchain/download-rspack-binding@v1
+      - run: # package and publish
+</code></pre>
+<h3 id="required-packagejson-configuration"><a class="header" href="#required-packagejson-configuration">Required Package.json Configuration</a></h3>
+<p>Your binding's <code>package.json</code> should include NAPI target configuration:</p>
+<pre><code class="language-json">{
+  "scripts": {
+    "build": "napi build --platform"
+  },
+  "napi": {
+    "targets": [
+      "x86_64-apple-darwin",
+      "aarch64-apple-darwin",
+      "x86_64-unknown-linux-gnu",
+      "x86_64-pc-windows-msvc"
+    ]
+  }
+}
+</code></pre>
+<h2 id="real-world-examples"><a class="header" href="#real-world-examples">Real-World Examples</a></h2>
+<p>The <a href="https://github.com/rspack-contrib/rspack-binding-template">rspack-binding-template</a> demonstrates practical workflow implementations.</p>
+<p>This workflow setup ensures reliable, cross-platform builds and releases for Rspack custom bindings while maintaining flexibility for different project structures and requirements.</p>
+<h2 id="additional-resources"><a class="header" href="#additional-resources">Additional Resources</a></h2>
+<p>For the latest updates, complete source code, and advanced configuration options, visit the official repository: https://github.com/rspack-contrib/rspack-toolchain</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="res/mermaid-anti-flash.js"></script>
+        <script src="res/mermaid.min.js"></script>
+        <script src="res/mermaid-init.js"></script>
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+
+    </div>
+    </body>
+</html>

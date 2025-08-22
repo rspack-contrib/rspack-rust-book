@@ -1,0 +1,554 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Create a Plugin - Rspack Rust Book</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../res/mermaid-anti-flash.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rspack Rust Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rspack-contrib/rspack-rust-book/tree/main" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/rspack-contrib/rspack-rust-book/tree/main/src/custom-binding/first-custom-binding/create-plugin.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="create-a-plugin"><a class="header" href="#create-a-plugin">Create a Plugin</a></h1>
+<p>This chapter explores the <code>MyBannerPlugin</code> that's already created in the template as a practical example. While the plugin is already implemented, we'll walk you through creating this plugin from scratch and using it in JavaScript. This demonstrates the complete workflow from Rust implementation to JavaScript integration.</p>
+<h2 id="what-is-mybannerplugin"><a class="header" href="#what-is-mybannerplugin">What is <code>MyBannerPlugin</code>?</a></h2>
+<p><code>MyBannerPlugin</code> is a simple plugin that adds a banner comment to the top of generated JavaScript files.</p>
+<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
+<p>Before starting this tutorial, make sure you have completed the <a href="./setup.html">setup process</a> and can successfully run the example plugin.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>We'll guide you through the plugin creation process in these steps:</p>
+<ol>
+<li><strong>Understand the Plugin Structure</strong> - Examine the basic Rust plugin structure</li>
+<li><strong>Learn the Plugin Logic</strong> - Understand how the banner functionality works</li>
+<li><strong>NAPI Bindings</strong> - See how Rust functionality is exposed to JavaScript using NAPI-RS</li>
+<li><strong>JavaScript Integration</strong> - Learn how to use the plugin in JavaScript and rspack configuration</li>
+<li><strong>Testing the Plugin</strong> - Learn how to verify the plugin works correctly</li>
+</ol>
+<p>Let's explore the <code>MyBannerPlugin</code> implementation.</p>
+<h2 id="1-understand-the-plugin-structure"><a class="header" href="#1-understand-the-plugin-structure">1. Understand the Plugin Structure</a></h2>
+<p>The <code>MyBannerPlugin</code> is implemented in Rust and follows the standard plugin structure.</p>
+<ul>
+<li><code>crates/binding/src/lib.rs</code> - The glue code that exports the plugin to JavaScript</li>
+<li><code>crates/binding/src/plugin.rs</code> - The <code>MyBannerPlugin</code> implementation</li>
+</ul>
+<h2 id="2-learn-the-plugin-logic"><a class="header" href="#2-learn-the-plugin-logic">2. Learn the Plugin Logic</a></h2>
+<p><code>MyBannerPlugin</code> adds a banner comment to the top of the generated <code>main.js</code> file.</p>
+<p>Before we start, be sure to add the following dependencies to your <code>Cargo.toml</code> file:</p>
+<ul>
+<li><code>rspack_core</code> - The Rspack core API</li>
+<li><code>rspack_error</code> - The Rspack error handling API</li>
+<li><code>rspack_hook</code> - The Rspack hook API</li>
+<li><code>rspack_sources</code> - The Rspack source API, which is a port of webpack's <a href="https://github.com/webpack/webpack-sources"><code>webpack-sources</code></a></li>
+</ul>
+<h3 id="21-initialize-the-plugin"><a class="header" href="#21-initialize-the-plugin">2.1 Initialize the Plugin</a></h3>
+<p><code>MyBannerPlugin</code> is implemented as a struct with a <code>banner</code> field containing the banner comment. The <code>new</code> method is a constructor that takes a <code>String</code> and returns a <code>MyBannerPlugin</code> instance.</p>
+<p>The <code>MyBannerPlugin</code> struct is annotated with <code>#[plugin]</code> to indicate it's a plugin. The <code>#[plugin]</code> macro is provided by the <code>rspack_hook</code> crate.</p>
+<p>It also implements the <code>Plugin</code> trait from the <code>rspack_core</code> crate. The <code>Plugin</code> trait is core for all plugins, requiring the <code>name</code> method to return the plugin name and the <code>apply</code> method to apply the plugin to compilation, matching the <code>apply</code> method in the <a href="https://rspack.rs/api/plugin-api">Rspack JavaScript Plugin API</a>.</p>
+<p>In this example, the <code>name</code> method returns <code>"MyBannerPlugin"</code>, and the <code>apply</code> method is currently to be implemented.</p>
+<pre><code class="language-rust ignore">/// A plugin that adds a banner to the output `main.js`.
+#[derive(Debug)]
+#[plugin]
+pub struct MyBannerPlugin {
+  banner: String,
+}
+
+impl MyBannerPlugin {
+  pub fn new(banner: String) -&gt; Self {
+    Self::new_inner(banner)
+  }
+}
+
+impl Plugin for MyBannerPlugin {
+  fn name(&amp;self) -&gt; &amp;'static str {
+    "MyBannerPlugin"
+  }
+
+  fn apply(
+    &amp;self,
+    ctx: PluginContext&lt;&amp;mut ApplyContext&gt;,
+    _options: &amp;CompilerOptions,
+  ) -&gt; rspack_error::Result&lt;()&gt; {
+    Ok(())
+  }
+}</code></pre>
+<h3 id="22-implement-with-rust-hooks"><a class="header" href="#22-implement-with-rust-hooks">2.2 Implement with Rust Hooks</a></h3>
+<p>Like hooks in the <a href="https://rspack.rs/api/plugin-api">Rspack JavaScript Plugin API</a>, Rust hooks are implemented as functions that take a reference to the plugin instance and a reference to certain categories.</p>
+<p>The <code>apply</code> method is called with <code>PluginContext</code> and <code>CompilerOptions</code> instances.</p>
+<p>In this example, we'll append the <code>banner</code> to the <code>main.js</code> file, so we need to implement the <code>process_assets</code> hook.</p>
+<p>To tap the <code>process_assets</code> hook, declare a function and annotate it with <code>#[plugin_hook]</code> from <code>rspack_hook</code>. Since <code>process_assets</code> is a compilation hook, import <code>CompilationProcessAssets</code> from <code>rspack_core</code>. Set the stage to <a href="https://rspack.rs/api/plugin-api/compilation-hooks#process-assets-stages"><code>Compilation::PROCESS_ASSETS_STAGE_ADDITIONS</code></a> and tracing to <code>false</code> to avoid recording <a href="https://rspack.rs/contribute/development/tracing#tracing">tracing</a> information since we don't need it.</p>
+<pre><code class="language-rust ignore">#[plugin_hook(CompilationProcessAssets for MyBannerPlugin, stage = Compilation::PROCESS_ASSETS_STAGE_ADDITIONS, tracing = false)]
+async fn process_assets(&amp;self, compilation: &amp;mut Compilation) -&gt; Result&lt;()&gt; {
+  let asset = compilation.assets_mut().get_mut("main.js");
+  if let Some(asset) = asset {
+    let original_source = asset.get_source().cloned();
+    asset.set_source(Some(Arc::new(ConcatSource::new([
+      RawSource::from(self.banner.as_str()).boxed(),
+      original_source.unwrap().boxed(),
+    ]))));
+  }
+
+  Ok(())
+}</code></pre>
+<h3 id="23-tap-the-hook"><a class="header" href="#23-tap-the-hook">2.3 Tap the hook</a></h3>
+<pre><code class="language-rust ignore">impl Plugin for MyBannerPlugin {
+  fn name(&amp;self) -&gt; &amp;'static str {
+    "MyBannerPlugin"
+  }
+
+  fn apply(
+    &amp;self,
+    ctx: PluginContext&lt;&amp;mut ApplyContext&gt;,
+    _options: &amp;CompilerOptions,
+  ) -&gt; rspack_error::Result&lt;()&gt; {
+    ctx
+      .context
+      .compilation_hooks
+      .process_assets
+      .tap(process_assets::new(self));
+    Ok(())
+  }
+}</code></pre>
+<h3 id="23-conclusion"><a class="header" href="#23-conclusion">2.3 Conclusion</a></h3>
+<p>You've learned how to create a plugin in Rust and tap the <code>process_assets</code> hook. Find the full code in the <a href="https://github.com/rspack-contrib/rspack-binding-template/blob/main/crates/binding/src/plugin.rs">rspack-binding-template</a> repository.</p>
+<p>Next, you'll learn how to expose the plugin to JavaScript.</p>
+<h2 id="3-napi-bindings"><a class="header" href="#3-napi-bindings">3. NAPI Bindings</a></h2>
+<p>This section covers exposing the plugin to JavaScript using NAPI bindings, creating a JavaScript wrapper for the plugin, and reusing the <code>@rspack/core</code> package to create a new core package replacing the original <code>@rspack/core</code> package.</p>
+<h3 id="31-expose-the-plugin-to-javascript"><a class="header" href="#31-expose-the-plugin-to-javascript">3.1 Expose the Plugin to JavaScript</a></h3>
+<p>To expose the plugin to JavaScript, create a NAPI binding.</p>
+<p>Let's examine the <code>crates/binding/src/lib.rs</code> file.</p>
+<p>Add these dependencies to your <code>Cargo.toml</code>:</p>
+<ul>
+<li><code>rspack_binding_builder</code> - Rspack binding builder API</li>
+<li><code>rspack_binding_builder_macros</code> - Rspack binding builder macros</li>
+<li><a href="https://docs.rs/napi/latest/napi/"><code>napi</code></a> - NAPI-RS crate</li>
+<li><a href="https://docs.rs/napi_derive/latest/napi_derive/"><code>napi_derive</code></a> - NAPI-RS derive macro</li>
+</ul>
+<p>The <code>crates/binding/src/lib.rs</code> file exports the plugin to JavaScript using NAPI bindings.</p>
+<blockquote>
+<p><strong>Note:</strong> Split plugin implementation across files: <code>plugin.rs</code> for logic, <code>lib.rs</code> for JavaScript bindings.</p>
+</blockquote>
+<p>Import required crates and use the <code>register_plugin</code> macro to expose the plugin:</p>
+<ol>
+<li>Import <code>napi::bindgen_prelude::*</code> (required by <code>register_plugin</code> macro)</li>
+<li>Import <code>register_plugin</code> from <code>rspack_binding_builder_macros</code></li>
+<li>Import <code>napi_derive</code> with <code>#[macro_use]</code> attribute</li>
+<li>Use <code>register_plugin</code> with a plugin name and resolver function</li>
+</ol>
+<p>The <code>register_plugin</code> macro takes a plugin name (used for JavaScript identification) and a resolver function. The resolver receives <a href="https://docs.rs/napi/latest/napi/struct.Env.html"><code>napi::Env</code></a> and <a href="https://docs.rs/napi/latest/napi/struct.Unknown.html"><code>napi::Unknown</code></a> options from JavaScript, returning a <code>BoxPlugin</code> instance.</p>
+<p>When JavaScript calls <code>new rspack.MyBannerPlugin("// banner")</code>, the resolver function receives the banner string. It extracts this string using <a href="https://docs.rs/napi/latest/napi/struct.Unknown.html#method.coerce_to_string"><code>napi::Unknown::coerce_to_string</code></a> and creates a <code>BoxPlugin</code> by calling <code>MyBannerPlugin::new(banner)</code>.</p>
+<blockquote>
+<p><strong>Note:</strong> The <code>Unknown</code> type represents any JavaScript value.</p>
+<p>In this example, we use the <code>coerce_to_string</code> method to get the banner string. The <code>coerce_to_string</code> method returns a <code>Result</code> - it will succeed for <a href="https://nodejs.org/api/n-api.html#napi_coerce_to_string">string-convertible values</a> but error if the value cannot be converted to a string. Additional type validation can be added as needed.</p>
+</blockquote>
+<pre><code class="language-rust ignore">mod plugin;
+
+use napi::bindgen_prelude::*;
+use rspack_binding_builder_macros::register_plugin;
+use rspack_core::BoxPlugin;
+
+#[macro_use]
+extern crate napi_derive;
+extern crate rspack_binding_builder;
+
+// Export a plugin named `MyBannerPlugin`.
+//
+// `register_plugin` is a macro that registers a plugin.
+//
+// The first argument to `register_plugin` is the name of the plugin.
+// The second argument to `register_plugin` is a resolver function that is called with `napi::Env` and the options returned from the resolver function from JS side.
+//
+// The resolver function should return a `BoxPlugin` instance.
+register_plugin!("MyBannerPlugin", |_env: Env, options: Unknown&lt;'_&gt;| {
+  let banner = options
+    .coerce_to_string()?
+    .into_utf8()?
+    .as_str()?
+    .to_string();
+  Ok(Box::new(plugin::MyBannerPlugin::new(banner)) as BoxPlugin)
+});</code></pre>
+<p>After exposing the plugin to JavaScript, rerun <code>pnpm build</code> in <code>crates/binding</code> to build the plugin. Ensure you have <code>lib.crate-type = ["cdylib"]</code> defined in your <code>Cargo.toml</code> file.</p>
+<blockquote>
+<p><strong>Note:</strong> The <code>cdylib</code> crate type is required for the plugin to be used in JavaScript.</p>
+<p>This makes this crate a dynamic library, on Linux, it will be a <code>*.so</code> file and on Windows, it will be a <code>*.dll</code> file.</p>
+<p>The <code>NAPI-RS</code>cli we triggered on <code>pnpm build</code> will rename the <code>*.so</code> or <code>*.dll</code> file to <code>*.node</code> file. So that can be loaded by the NAPI runtime, which, in this case, is the Node.js.</p>
+</blockquote>
+<h3 id="32-create-a-javascript-plugin-wrapper"><a class="header" href="#32-create-a-javascript-plugin-wrapper">3.2 Create a JavaScript Plugin Wrapper</a></h3>
+<p>With the Rust plugin implemented and exposed to JavaScript, create a JavaScript wrapper to use the plugin in JavaScript and Rspack configuration.</p>
+<p>Check the <code>lib/index.js</code> file in the <a href="https://github.com/rspack-contrib/rspack-binding-template/blob/main/lib/index.js">rspack-binding-template</a> repository.</p>
+<p>Create a <code>MyBannerPlugin</code> class that wraps the Rust plugin:</p>
+<pre><code class="language-js ignore">// Rewrite the `RSPACK_BINDING` environment variable to the directory of the `.node` file.
+// So that we can reuse the `@rspack/core` package to load the right binding.
+process.env.RSPACK_BINDING = require('node:path').dirname(
+  require.resolve('@rspack-template/test-binding')
+);
+
+const binding = require('@rspack-template/test-binding');
+
+// Register the plugin `MyBannerPlugin` exported by `crates/binding/src/lib.rs`.
+binding.registerMyBannerPlugin();
+
+const core = require('@rspack/core');
+
+/**
+ * Creates a wrapper for the plugin `MyBannerPlugin` exported by `crates/binding/src/lib.rs`.
+ *
+ * Check out `crates/binding/src/lib.rs` for the original plugin definition.
+ * This plugin is used in `examples/use-plugin/build.js`.
+ *
+ * @example
+ * ```js
+ * const MyBannerPlugin = require('@rspack-template/test-core').MyBannerPlugin;
+ * ```
+ *
+ * `createNativePlugin` is a function that creates a wrapper for the plugin.
+ *
+ * The first argument to `createNativePlugin` is the name of the plugin.
+ * The second argument to `createNativePlugin` is a resolver function.
+ *
+ * Options used to call `new MyBannerPlugin` will be passed as the arguments to the resolver function.
+ * The return value of the resolver function will be used to initialize the plugin in `MyBannerPlugin` on the Rust side.
+ *
+ * For the following code:
+ *
+ * ```js
+ * new MyBannerPlugin('// Hello World')
+ * ```
+ *
+ * The resolver function will be called with `'// Hello World'`.
+ *
+ */
+const MyBannerPlugin = core.experiments.createNativePlugin(
+  'MyBannerPlugin',
+  function (options) {
+    return options;
+  }
+);
+
+Object.defineProperty(core, 'MyBannerPlugin', {
+  value: MyBannerPlugin,
+});
+
+module.exports = core;
+</code></pre>
+<p>Breaking down the code:</p>
+<p><strong>1. Rewrite the <code>RSPACK_BINDING</code> Environment Variable</strong></p>
+<p>The <code>RSPACK_BINDING</code> environment variable tells the <code>@rspack/core</code> package where to load the binding from. The expected value is an <strong>absolute path</strong> to the binding package directory.</p>
+<blockquote>
+<p><strong>Note:</strong> This line should be placed before the <code>require('@rspack/core')</code> line. Otherwise, the <code>@rspack/core</code> package will not be able to find the binding.</p>
+</blockquote>
+<p>This example uses <code>require.resolve</code> to get the path of the <code>@rspack-template/test-binding</code> package. This resolves to the <code>index.js</code> file in the <code>@rspack-template/test-binding</code> package, then uses <code>dirname</code> to get the package directory.</p>
+<pre><code class="language-js ignore">process.env.RSPACK_BINDING = require('node:path').dirname(
+  require.resolve('@rspack-template/test-binding')
+);
+</code></pre>
+<p><strong>2. Register the Plugin to the Global Plugin List</strong></p>
+<p>The <code>register_plugin</code> macro in <code>crates/binding/src/lib.rs</code> exposes the plugin to JavaScript.</p>
+<p>For the <code>MyBannerPlugin</code> defined in <code>crates/binding/src/lib.rs</code>, the <code>register_plugin</code> macro exposes a JS function named <code>registerMyBannerPlugin</code>. Call this function to register the plugin to the global plugin list.</p>
+<blockquote>
+<p><strong>Note:</strong> Calling <code>registerMyBannerPlugin</code> doesn't register the plugin to the current Rspack instance. It only registers the plugin to the global plugin list. Use the wrapper defined in the next section to register the plugin to the current Rspack instance or use it in Rspack configuration.</p>
+</blockquote>
+<pre><code class="language-js ignore">const binding = require('@rspack-template/test-binding');
+
+// Register the plugin `MyBannerPlugin` exported by `crates/binding/src/lib.rs`.
+binding.registerMyBannerPlugin();
+</code></pre>
+<p><strong>3. Create a Wrapper for the Plugin</strong></p>
+<p>The <code>createNativePlugin</code> function creates a wrapper for the plugin. It's defined in the <code>@rspack/core</code> package.</p>
+<p>The first argument to <code>createNativePlugin</code> is the plugin name defined on the Rust side. The second argument is a resolver function.</p>
+<p>In this example, the plugin name is <code>"MyBannerPlugin"</code>, and the resolver function is called with options passed to the <code>new MyBannerPlugin</code> constructor (the banner string). Since we don't need to process the options, we just return them.</p>
+<pre><code class="language-js ignore">const core = require('@rspack/core');
+
+const MyBannerPlugin = core.experiments.createNativePlugin(
+  'MyBannerPlugin',
+  function (options) {
+    return options;
+  }
+);
+</code></pre>
+<p><strong>4. Export the Plugin Wrapper and <code>@rspack/core</code></strong></p>
+<p>Finally, export the <code>MyBannerPlugin</code> wrapper and the <code>@rspack/core</code> package. This allows using the plugin in Rspack configuration and reusing all other APIs in the <code>@rspack/core</code> package.</p>
+<pre><code class="language-js ignore">Object.defineProperty(core, 'MyBannerPlugin', {
+  value: MyBannerPlugin,
+});
+
+module.exports = core;
+</code></pre>
+<h3 id="33-conclusion"><a class="header" href="#33-conclusion">3.3 Conclusion</a></h3>
+<p>You've learned how to expose the plugin to JavaScript using NAPI bindings, created a JavaScript wrapper for the plugin, and reused the <code>@rspack/core</code> package to create a new core package replacing the original <code>@rspack/core</code> package.</p>
+<p>Next, you'll learn how to use the plugin in Rspack configuration.</p>
+<h2 id="4-javascript-integration"><a class="header" href="#4-javascript-integration">4. JavaScript Integration</a></h2>
+<p>This section covers using the <code>MyBannerPlugin</code> in Rspack configuration.</p>
+<p>Check the <code>examples/use-plugin/build.js</code> file in the <a href="https://github.com/rspack-contrib/rspack-binding-template/blob/main/examples/use-plugin/build.js">rspack-binding-template</a> repository. With the <code>MyBannerPlugin</code> wrapper created in the previous section, you can now use it in Rspack configuration.</p>
+<pre><code class="language-js ignore">const path = require('node:path');
+
+const rspack = require('@rspack-template/test-core');
+
+const compiler = rspack({
+  context: __dirname,
+  mode: 'development',
+  entry: {
+    main: './src/index.js',
+  },
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+  },
+  plugins: [
+    new rspack.MyBannerPlugin(
+      '/** Generated by MyBannerPlugin in `@rspack-template/binding` */'
+    ),
+  ],
+});
+
+compiler.run((err, stats) =&gt; {
+  if (err) {
+    console.error(err);
+  }
+  console.info(stats.toString({ colors: true }));
+});
+</code></pre>
+<h2 id="5-testing-the-plugin"><a class="header" href="#5-testing-the-plugin">5. Testing the Plugin</a></h2>
+<p>Run <code>node examples/use-plugin/build.js</code> to see the plugin in action. Check the output in <code>dist/main.js</code> to see the banner comment added to the top of the file:</p>
+<pre><code class="language-js ignore">/** Generated by MyBannerPlugin in `@rspack-template/binding` */(() =&gt; { // webpackBootstrap
+var __webpack_modules__ = ({
+"./src/index.js":
+...
+</code></pre>
+<p>This is the same command as in <a href="./setup.html">Verify Setup</a>, but now you understand what's happening behind the scenes.</p>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<p>You've learned how to:</p>
+<ul>
+<li>Create a plugin in Rust and expose it to JavaScript using NAPI bindings</li>
+<li>Create a JavaScript wrapper for the plugin</li>
+<li>Reuse the <code>@rspack/core</code> package to create a new core package replacing the original <code>@rspack/core</code> package</li>
+<li>Use the plugin in Rspack configuration</li>
+</ul>
+<p>Next, you'll learn to <a href="./release.html">release</a> the plugin to npm with <a href="https://docs.github.com/actions">GitHub Actions</a>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../custom-binding/first-custom-binding/setup.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../custom-binding/first-custom-binding/release.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../custom-binding/first-custom-binding/setup.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../custom-binding/first-custom-binding/release.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../../res/mermaid-anti-flash.js"></script>
+        <script src="../../res/mermaid.min.js"></script>
+        <script src="../../res/mermaid-init.js"></script>
+
+
+
+    </div>
+    </body>
+</html>
