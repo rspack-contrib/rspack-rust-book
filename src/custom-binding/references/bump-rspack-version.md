@@ -141,7 +141,7 @@ Before starting the manual bump process, ensure you have:
 ### Common Issues
 
 **Version Mismatch Between @rspack/core and Custom Binding**
-```
+```text
 Unmatched version @rspack/core@1.5.0 and binding version.
 
 Help:
